@@ -64,7 +64,7 @@ fn bench_zalgebra_vec_len(allocator: std.mem.Allocator) void {
     _ = allocator;
     const vec3_za = zalgebra.Vec3.new(0.2, 0.3, 0.4);
 
-    var result = zalgebra.Vec3.norm(vec3_za);
+    var result = zalgebra.Vec3.length(vec3_za);
     std.mem.doNotOptimizeAway(&result);
 }
 
