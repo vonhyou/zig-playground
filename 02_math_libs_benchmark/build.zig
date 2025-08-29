@@ -7,10 +7,7 @@ pub fn build(b: *std.Build) void {
         .root_source_file = b.path("src/root.zig"),
         .target = target,
     });
-    const zalgebra = b.dependency("zalgebra", .{
-        .target = target,
-        .optimize = optimize,
-    });
+
     const exe = b.addExecutable(.{
         .name = "_02_math_libs_benchmark",
         .root_module = b.createModule(.{
@@ -23,7 +20,16 @@ pub fn build(b: *std.Build) void {
         }),
     });
 
+    const opts = .{ .target = target, .optimize = optimize };
+
+    const zalgebra = b.dependency("zalgebra", opts);
     exe.root_module.addImport("zalgebra", zalgebra.module("zalgebra"));
+
+    const zbench = b.dependency("zbench", opts);
+    exe.root_module.addImport("zbench", zbench.module("zbench"));
+
+    const zm = b.dependency("zm", opts);
+    exe.root_module.addImport("zm", zm.module("zm"));
 
     b.installArtifact(exe);
 
@@ -54,4 +60,3 @@ pub fn build(b: *std.Build) void {
     test_step.dependOn(&run_mod_tests.step);
     test_step.dependOn(&run_exe_tests.step);
 }
-
