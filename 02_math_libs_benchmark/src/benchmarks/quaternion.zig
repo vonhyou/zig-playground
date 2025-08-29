@@ -44,21 +44,3 @@ pub fn bench_zm_quat_normalize(allocator: std.mem.Allocator) void {
     std.mem.doNotOptimizeAway(&quat);
 }
 
-// Basic quaternion operations
-pub fn bench_zalgebra_quat_basic(allocator: std.mem.Allocator) void {
-    _ = allocator;
-    const axis_vec = zalgebra.Vec3.new(0, 1, 0);
-    const quat = zalgebra.Quat.fromAxis(std.math.pi / 4.0, axis_vec);
-
-    var result = zalgebra.Quat.norm(quat);
-    std.mem.doNotOptimizeAway(&result);
-}
-
-pub fn bench_zm_quat_basic(allocator: std.mem.Allocator) void {
-    _ = allocator;
-    const axis = [_]f32{ 0, 1, 0 };
-    var quat = zm.Quaternionf.fromAxisAngle(axis, std.math.pi / 4.0);
-
-    zm.Quaternionf.normalize(&quat);
-    std.mem.doNotOptimizeAway(&quat);
-}

@@ -52,8 +52,6 @@ const BENCHMARKS = [_]BenchmarkInfo{
     .{ .name = "zm quat mul", .func = quaternion.bench_zm_quat_mul, .category = .quat },
     .{ .name = "zalgebra quat normalize", .func = quaternion.bench_zalgebra_quat_normalize, .category = .quat },
     .{ .name = "zm quat normalize", .func = quaternion.bench_zm_quat_normalize, .category = .quat },
-    .{ .name = "zalgebra quat basic", .func = quaternion.bench_zalgebra_quat_basic, .category = .quat },
-    .{ .name = "zm quat basic", .func = quaternion.bench_zm_quat_basic, .category = .quat },
 };
 
 fn printHelp(writer: anytype) !void {
