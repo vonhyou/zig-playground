@@ -60,7 +60,7 @@ fn bench_zm_vec_cross(allocator: std.mem.Allocator) void {
     std.mem.doNotOptimizeAway(&result);
 }
 
-fn bench_zalgebra_vec_normalize(allocator: std.mem.Allocator) void {
+fn bench_zalgebra_vec_len(allocator: std.mem.Allocator) void {
     _ = allocator;
     const vec3_za = zalgebra.Vec3.new(0.2, 0.3, 0.4);
 
@@ -68,11 +68,11 @@ fn bench_zalgebra_vec_normalize(allocator: std.mem.Allocator) void {
     std.mem.doNotOptimizeAway(&result);
 }
 
-fn bench_zm_vec_normalize(allocator: std.mem.Allocator) void {
+fn bench_zm_vec_len(allocator: std.mem.Allocator) void {
     _ = allocator;
     const vec3_zm = zm.Vec3{ 0.2, 0.3, 0.4 };
 
-    var result = zm.vec.normalize(vec3_zm);
+    var result = zm.vec.len(vec3_zm);
     std.mem.doNotOptimizeAway(&result);
 }
 
@@ -128,8 +128,8 @@ pub fn main() !void {
     try bench.add("zalgebra vec cross", bench_zalgebra_vec_cross, .{});
     try bench.add("zm vec cross", bench_zm_vec_cross, .{});
 
-    try bench.add("zalgebra vec normalize", bench_zalgebra_vec_normalize, .{});
-    try bench.add("zm vec normalize", bench_zm_vec_normalize, .{});
+    try bench.add("zalgebra vec len", bench_zalgebra_vec_len, .{});
+    try bench.add("zm vec len", bench_zm_vec_len, .{});
 
     try bench.add("zalgebra varying data", bench_zalgebra_varying_data, .{});
     try bench.add("zm varying data", bench_zm_varying_data, .{});
@@ -137,3 +137,4 @@ pub fn main() !void {
     try writer.writeAll("\n");
     try bench.run(writer);
 }
+
