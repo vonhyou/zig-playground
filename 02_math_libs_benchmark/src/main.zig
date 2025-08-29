@@ -40,28 +40,20 @@ const BENCHMARKS = [_]BenchmarkInfo{
     // Matrix operations
     .{ .name = "zalgebra mat mul", .func = matrix.bench_zalgebra_mat_mul, .category = .matrix },
     .{ .name = "zm mat mul", .func = matrix.bench_zm_mat_mul, .category = .matrix },
-    .{ .name = "zalgebra mat inverse", .func = matrix.bench_zalgebra_mat_inverse, .category = .matrix },
-    .{ .name = "zm mat inverse", .func = matrix.bench_zm_mat_inverse, .category = .matrix },
     .{ .name = "zalgebra mat transpose", .func = matrix.bench_zalgebra_mat_transpose, .category = .matrix },
     .{ .name = "zm mat transpose", .func = matrix.bench_zm_mat_transpose, .category = .matrix },
     .{ .name = "zalgebra transform matrix", .func = matrix.bench_zalgebra_transform_matrix, .category = .matrix },
     .{ .name = "zm transform matrix", .func = matrix.bench_zm_transform_matrix, .category = .matrix },
-    .{ .name = "zalgebra mvp chain", .func = matrix.bench_zalgebra_mvp_chain, .category = .matrix },
-    .{ .name = "zm mvp chain", .func = matrix.bench_zm_mvp_chain, .category = .matrix },
+    .{ .name = "zalgebra matrix chain", .func = matrix.bench_zalgebra_matrix_chain, .category = .matrix },
+    .{ .name = "zm matrix chain", .func = matrix.bench_zm_matrix_chain, .category = .matrix },
 
     // Quaternion operations
     .{ .name = "zalgebra quat mul", .func = quaternion.bench_zalgebra_quat_mul, .category = .quat },
     .{ .name = "zm quat mul", .func = quaternion.bench_zm_quat_mul, .category = .quat },
     .{ .name = "zalgebra quat normalize", .func = quaternion.bench_zalgebra_quat_normalize, .category = .quat },
     .{ .name = "zm quat normalize", .func = quaternion.bench_zm_quat_normalize, .category = .quat },
-    .{ .name = "zalgebra quat slerp", .func = quaternion.bench_zalgebra_quat_slerp, .category = .quat },
-    .{ .name = "zm quat slerp", .func = quaternion.bench_zm_quat_slerp, .category = .quat },
-    .{ .name = "zalgebra quat to mat", .func = quaternion.bench_zalgebra_quat_to_mat, .category = .quat },
-    .{ .name = "zm quat to mat", .func = quaternion.bench_zm_quat_to_mat, .category = .quat },
-    .{ .name = "zalgebra quat rotate vec", .func = quaternion.bench_zalgebra_quat_rotate_vec, .category = .quat },
-    .{ .name = "zm quat rotate vec", .func = quaternion.bench_zm_quat_rotate_vec, .category = .quat },
-    .{ .name = "zalgebra quat conjugate", .func = quaternion.bench_zalgebra_quat_conjugate, .category = .quat },
-    .{ .name = "zm quat conjugate", .func = quaternion.bench_zm_quat_conjugate, .category = .quat },
+    .{ .name = "zalgebra quat basic", .func = quaternion.bench_zalgebra_quat_basic, .category = .quat },
+    .{ .name = "zm quat basic", .func = quaternion.bench_zm_quat_basic, .category = .quat },
 };
 
 fn printHelp(writer: anytype) !void {

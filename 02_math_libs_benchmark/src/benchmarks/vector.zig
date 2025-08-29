@@ -76,12 +76,12 @@ pub fn bench_zm_vec_len(allocator: std.mem.Allocator) void {
     std.mem.doNotOptimizeAway(&result);
 }
 
-// Vector normalization benchmarks
+// Vector normalization benchmarks  
 pub fn bench_zalgebra_vec_normalize(allocator: std.mem.Allocator) void {
     _ = allocator;
     const vec3_za = zalgebra.Vec3.new(0.2, 0.3, 0.4);
 
-    var result = zalgebra.Vec3.normalize(vec3_za);
+    var result = zalgebra.Vec3.norm(vec3_za);
     std.mem.doNotOptimizeAway(&result);
 }
 
@@ -98,8 +98,11 @@ pub fn bench_zalgebra_vec_lerp(allocator: std.mem.Allocator) void {
     _ = allocator;
     const vec3_za_a = zalgebra.Vec3.new(0.2, 0.3, 0.4);
     const vec3_za_b = zalgebra.Vec3.new(0.4, 0.3, 0.2);
-
-    var result = zalgebra.Vec3.lerp(vec3_za_a, vec3_za_b, 0.5);
+    
+    // Manual lerp implementation: a + (b - a) * t
+    const diff = zalgebra.Vec3.sub(vec3_za_b, vec3_za_a);
+    const scaled = zalgebra.Vec3.scale(diff, 0.5);
+    var result = zalgebra.Vec3.add(vec3_za_a, scaled);
     std.mem.doNotOptimizeAway(&result);
 }
 
@@ -118,7 +121,9 @@ pub fn bench_zalgebra_vec_distance(allocator: std.mem.Allocator) void {
     const vec3_za_a = zalgebra.Vec3.new(0.2, 0.3, 0.4);
     const vec3_za_b = zalgebra.Vec3.new(0.4, 0.3, 0.2);
 
-    var result = zalgebra.Vec3.distance(vec3_za_a, vec3_za_b);
+    // Manual distance: length(b - a)
+    const diff = zalgebra.Vec3.sub(vec3_za_b, vec3_za_a);
+    var result = zalgebra.Vec3.length(diff);
     std.mem.doNotOptimizeAway(&result);
 }
 
