@@ -93,6 +93,11 @@ fn runBenchmarks(allocator: std.mem.Allocator, writer: anytype, category: ?Bench
     var bench = zbench.Benchmark.init(allocator, config.BENCHMARK_CONFIG);
     defer bench.deinit();
 
+    // Note: show_mem flag is prepared for future zbench API integration
+    // The zbench library already tracks allocations (config.track_allocations = true)
+    // but the display of memory rows would need zbench API support
+    _ = show_mem;
+
     if (simd_mode) {
         // SIMD mode: register ONLY SIMD benchmarks
         for (SIMD_BENCHMARKS) |benchmark_info| {
