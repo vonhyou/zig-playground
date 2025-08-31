@@ -45,8 +45,8 @@
             .hash = "zm-0.4.0-cLX-WdndAACqPRGqhCAsd65iTajgaVVwrXhoLUQFKTOt",
         },
         .zmath = .{
-            .url = "https://github.com/zig-gamedev/zmath/archive/dafbb72d71237ab8fb364555193b7eb7fb958a29.tar.gz",
-            .hash = "zmath-0.11.0-dev-wjwivU8rAwD1vxlEofaYUPQv58qalTVNJUz9Mekvw56B",
+            .url = "git+https://github.com/zig-gamedev/zmath.git#05799b336d4eb315cd5a5e5693a5704ba01db36c",
+            .hash = "zmath-0.11.0-dev-wjwivdErAwA9JvOksjectxgnDUZumDR1V9DwKy5UeTOT",
         },
     },
     .paths = .{
