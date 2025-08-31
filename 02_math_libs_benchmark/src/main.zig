@@ -82,36 +82,46 @@ fn printHelp(writer: anytype) !void {
     try writer.writeAll("============================\n\n");
     try writer.writeAll("Usage: zig build run -- [OPTION] [FLAGS]\n\n");
     try writer.writeAll("Available options:\n");
-    try writer.writeAll("  full    Run all benchmarks\n");
-    try writer.writeAll("  vec     Run only vector operations benchmarks\n");
-    try writer.writeAll("  matrix  Run only matrix operations benchmarks\n");
-    try writer.writeAll("  quat    Run only quaternion operations benchmarks\n");
+    try writer.writeAll("  full    Run scalar parity benchmarks (default) or SIMD benchmarks with --simd\n");
+    try writer.writeAll("  vec     Run scalar parity vector benchmarks or SIMD vector benchmarks with --simd\n");
+    try writer.writeAll("  matrix  Run scalar parity matrix benchmarks or SIMD matrix benchmarks with --simd\n");
+    try writer.writeAll("  quat    Run scalar parity quaternion benchmarks or SIMD quaternion benchmarks with --simd\n");
     try writer.writeAll("  help    Show this help message\n\n");
     try writer.writeAll("Available flags:\n");
-    try writer.writeAll("  --simd  Run additional zmath SIMD benchmarks (end-to-end F32x4)\n\n");
+    try writer.writeAll("  --simd  Run SIMD benchmarks only (replaces scalar benchmarks)\n\n");
+    try writer.writeAll("Benchmark modes:\n");
+    try writer.writeAll("  Default mode: Runs scalar parity benchmarks across all libraries using f32 types.\n");
+    try writer.writeAll("  SIMD mode:    Runs zmath SIMD-optimized benchmarks only (end-to-end F32x4).\n\n");
     try writer.writeAll("If no option is provided, this help message will be displayed.\n\n");
     try writer.writeAll("Examples:\n");
-    try writer.writeAll("  zig build run -- full\n");
-    try writer.writeAll("  zig build run -- vec\n");
-    try writer.writeAll("  zig build run -- matrix --simd\n");
-    try writer.writeAll("  zig build run -- quat --simd\n");
+    try writer.writeAll("  zig build run -- full         # Scalar parity benchmarks\n");
+    try writer.writeAll("  zig build run -- full --simd  # SIMD benchmarks only\n");
+    try writer.writeAll("  zig build run -- vec          # Scalar vector benchmarks\n");
+    try writer.writeAll("  zig build run -- matrix --simd # SIMD matrix benchmarks\n");
 }
 
 fn runBenchmarks(allocator: std.mem.Allocator, writer: anytype, category: ?BenchmarkCategory, simd_mode: bool) !void {
     var bench = zbench.Benchmark.init(allocator, config.BENCHMARK_CONFIG);
     defer bench.deinit();
 
-    // Add regular benchmarks
-    for (BENCHMARKS) |benchmark_info| {
-        if (category == null or benchmark_info.category == category.?) {
-            try bench.add(benchmark_info.name, benchmark_info.func, .{});
-        }
-    }
-
-    // Add SIMD benchmarks if requested
     if (simd_mode) {
+        // SIMD mode: register ONLY SIMD benchmarks
         for (SIMD_BENCHMARKS) |benchmark_info| {
             if (category == null or benchmark_info.category == category.?) {
+                try bench.add(benchmark_info.name, benchmark_info.func, .{});
+            }
+        }
+    } else {
+        // Scalar parity mode: register ONLY scalar parity benchmarks (excluding redundant/non-parity entries)
+        for (BENCHMARKS) |benchmark_info| {
+            if (category == null or benchmark_info.category == category.?) {
+                // Skip varying data benchmarks
+                if (std.mem.indexOf(u8, benchmark_info.name, "varying data") != null) continue;
+                // Skip transform matrix benchmarks
+                if (std.mem.indexOf(u8, benchmark_info.name, "transform matrix") != null) continue;
+                // Skip zmath look at benchmark (zmath-only, not cross-library parity)
+                if (std.mem.eql(u8, benchmark_info.name, "zmath look at")) continue;
+                
                 try bench.add(benchmark_info.name, benchmark_info.func, .{});
             }
         }
@@ -120,21 +130,33 @@ fn runBenchmarks(allocator: std.mem.Allocator, writer: anytype, category: ?Bench
     if (category) |cat| {
         switch (cat) {
             .vec => {
-                try writer.writeAll("\n=== Vector Operations Benchmarks ===\n");
-                if (simd_mode) try writer.writeAll("(includes zmath SIMD benchmarks)\n");
+                if (simd_mode) {
+                    try writer.writeAll("\n=== Vector Operations SIMD Benchmarks ===\n");
+                } else {
+                    try writer.writeAll("\n=== Vector Operations Scalar Parity Benchmarks ===\n");
+                }
             },
             .matrix => {
-                try writer.writeAll("\n=== Matrix Operations Benchmarks ===\n");
-                if (simd_mode) try writer.writeAll("(includes zmath SIMD benchmarks)\n");
+                if (simd_mode) {
+                    try writer.writeAll("\n=== Matrix Operations SIMD Benchmarks ===\n");
+                } else {
+                    try writer.writeAll("\n=== Matrix Operations Scalar Parity Benchmarks ===\n");
+                }
             },
             .quat => {
-                try writer.writeAll("\n=== Quaternion Operations Benchmarks ===\n");
-                if (simd_mode) try writer.writeAll("(includes zmath SIMD benchmarks)\n");
+                if (simd_mode) {
+                    try writer.writeAll("\n=== Quaternion Operations SIMD Benchmarks ===\n");
+                } else {
+                    try writer.writeAll("\n=== Quaternion Operations Scalar Parity Benchmarks ===\n");
+                }
             },
         }
     } else {
-        try writer.writeAll("\n=== All Benchmarks ===\n");
-        if (simd_mode) try writer.writeAll("(includes zmath SIMD benchmarks)\n");
+        if (simd_mode) {
+            try writer.writeAll("\n=== SIMD Benchmarks ===\n");
+        } else {
+            try writer.writeAll("\n=== Scalar Parity Benchmarks ===\n");
+        }
     }
 
     try writer.writeAll("\n");
