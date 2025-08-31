@@ -59,6 +59,7 @@ const BENCHMARKS = [_]BenchmarkInfo{
     .{ .name = "zalgebra matrix chain", .func = matrix.bench_zalgebra_matrix_chain, .category = .matrix },
     .{ .name = "zm matrix chain", .func = matrix.bench_zm_matrix_chain, .category = .matrix },
     .{ .name = "zmath matrix chain", .func = zmath.bench_zmath_matrix_chain, .category = .matrix },
+    .{ .name = "zmath look at", .func = zmath.bench_zmath_look_at, .category = .matrix },
 
     // Quaternion operations
     .{ .name = "zalgebra quat mul", .func = quaternion.bench_zalgebra_quat_mul, .category = .quat },

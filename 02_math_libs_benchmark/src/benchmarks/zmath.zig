@@ -199,3 +199,13 @@ pub fn bench_zmath_simd_mat_chain(allocator: std.mem.Allocator) void {
     
     std.mem.doNotOptimizeAway(&result);
 }
+
+pub fn bench_zmath_look_at(allocator: std.mem.Allocator) void {
+    _ = allocator;
+    const eye = zmath_gd.f32x4(1.0, 2.0, 3.0, 0.0);
+    const target = zmath_gd.f32x4(0.0, 0.0, 0.0, 0.0);
+    const up = zmath_gd.f32x4(0.0, 1.0, 0.0, 0.0);
+
+    var result = zmath_gd.lookAtRh(eye, target, up);
+    std.mem.doNotOptimizeAway(&result);
+}
