@@ -2,56 +2,99 @@ const std = @import("std");
 const zalgebra = @import("zalgebra");
 const zm = @import("zm");
 const zmath_gd = @import("zmath_gd");
+const bench_utils = @import("../bench_utils.zig");
 
 // --- Vector Multiplication ---
 pub fn bench_vec_mul_zalgebra(allocator: std.mem.Allocator) void {
     _ = allocator;
-    const vec3_za_a = zalgebra.Vec3.new(0.2, 0.3, 0.4);
-    const vec3_za_b = zalgebra.Vec3.new(0.4, 0.3, 0.2);
+    const x_a = bench_utils.randFloat(0.1, 0.3);
+    const y_a = bench_utils.randFloat(0.2, 0.4);
+    const z_a = bench_utils.randFloat(0.3, 0.5);
+    const x_b = bench_utils.randFloat(0.3, 0.5);
+    const y_b = bench_utils.randFloat(0.2, 0.4);
+    const z_b = bench_utils.randFloat(0.1, 0.3);
+    
+    const vec3_za_a = zalgebra.Vec3.new(x_a, y_a, z_a);
+    const vec3_za_b = zalgebra.Vec3.new(x_b, y_b, z_b);
     var result = zalgebra.Vec3.mul(vec3_za_a, vec3_za_b);
-    std.mem.doNotOptimizeAway(&result);
+    bench_utils.consume(zalgebra.Vec3, result);
 }
 
 pub fn bench_vec_mul_zm(allocator: std.mem.Allocator) void {
     _ = allocator;
-    const vec3_zm_a = zm.Vec3f{ 0.2, 0.3, 0.4 };
-    const vec3_zm_b = zm.Vec3f{ 0.4, 0.3, 0.2 };
+    const x_a = bench_utils.randFloat(0.1, 0.3);
+    const y_a = bench_utils.randFloat(0.2, 0.4);
+    const z_a = bench_utils.randFloat(0.3, 0.5);
+    const x_b = bench_utils.randFloat(0.3, 0.5);
+    const y_b = bench_utils.randFloat(0.2, 0.4);
+    const z_b = bench_utils.randFloat(0.1, 0.3);
+    
+    const vec3_zm_a = zm.Vec3f{ x_a, y_a, z_a };
+    const vec3_zm_b = zm.Vec3f{ x_b, y_b, z_b };
     var result = vec3_zm_a * vec3_zm_b;
-    std.mem.doNotOptimizeAway(&result);
+    bench_utils.consume(zm.Vec3f, result);
 }
 
 pub fn bench_vec_mul_zmath(allocator: std.mem.Allocator) void {
     _ = allocator;
-    const vec3_za_a = zmath_gd.f32x4(0.2, 0.3, 0.4, 0.0);
-    const vec3_za_b = zmath_gd.f32x4(0.4, 0.3, 0.2, 0.0);
+    const x_a = bench_utils.randFloat(0.1, 0.3);
+    const y_a = bench_utils.randFloat(0.2, 0.4);
+    const z_a = bench_utils.randFloat(0.3, 0.5);
+    const x_b = bench_utils.randFloat(0.3, 0.5);
+    const y_b = bench_utils.randFloat(0.2, 0.4);
+    const z_b = bench_utils.randFloat(0.1, 0.3);
+    
+    const vec3_za_a = zmath_gd.f32x4(x_a, y_a, z_a, 0.0);
+    const vec3_za_b = zmath_gd.f32x4(x_b, y_b, z_b, 0.0);
     var result = vec3_za_a * vec3_za_b;
-    std.mem.doNotOptimizeAway(&result);
+    bench_utils.consume(zmath_gd.Vec, result);
 }
 
 // --- Vector Dot Product ---
 pub fn bench_vec_dot_zalgebra(allocator: std.mem.Allocator) void {
     _ = allocator;
-    const vec3_za_a = zalgebra.Vec3.new(0.2, 0.3, 0.4);
-    const vec3_za_b = zalgebra.Vec3.new(0.4, 0.3, 0.2);
+    const x_a = bench_utils.randFloat(0.1, 0.3);
+    const y_a = bench_utils.randFloat(0.2, 0.4);
+    const z_a = bench_utils.randFloat(0.3, 0.5);
+    const x_b = bench_utils.randFloat(0.3, 0.5);
+    const y_b = bench_utils.randFloat(0.2, 0.4);
+    const z_b = bench_utils.randFloat(0.1, 0.3);
+    
+    const vec3_za_a = zalgebra.Vec3.new(x_a, y_a, z_a);
+    const vec3_za_b = zalgebra.Vec3.new(x_b, y_b, z_b);
     var result = zalgebra.Vec3.dot(vec3_za_a, vec3_za_b);
-    std.mem.doNotOptimizeAway(&result);
+    bench_utils.consume(f32, result);
 }
 
 pub fn bench_vec_dot_zm(allocator: std.mem.Allocator) void {
     _ = allocator;
-    const vec3_zm_a = zm.Vec3f{ 0.2, 0.3, 0.4 };
-    const vec3_zm_b = zm.Vec3f{ 0.4, 0.3, 0.2 };
+    const x_a = bench_utils.randFloat(0.1, 0.3);
+    const y_a = bench_utils.randFloat(0.2, 0.4);
+    const z_a = bench_utils.randFloat(0.3, 0.5);
+    const x_b = bench_utils.randFloat(0.3, 0.5);
+    const y_b = bench_utils.randFloat(0.2, 0.4);
+    const z_b = bench_utils.randFloat(0.1, 0.3);
+    
+    const vec3_zm_a = zm.Vec3f{ x_a, y_a, z_a };
+    const vec3_zm_b = zm.Vec3f{ x_b, y_b, z_b };
     var result = zm.vec.dot(vec3_zm_a, vec3_zm_b);
-    std.mem.doNotOptimizeAway(&result);
+    bench_utils.consume(f32, result);
 }
 
 pub fn bench_vec_dot_zmath(allocator: std.mem.Allocator) void {
     _ = allocator;
-    const vec3_za_a = zmath_gd.f32x4(0.2, 0.3, 0.4, 0.0);
-    const vec3_za_b = zmath_gd.f32x4(0.4, 0.3, 0.2, 0.0);
+    const x_a = bench_utils.randFloat(0.1, 0.3);
+    const y_a = bench_utils.randFloat(0.2, 0.4);
+    const z_a = bench_utils.randFloat(0.3, 0.5);
+    const x_b = bench_utils.randFloat(0.3, 0.5);
+    const y_b = bench_utils.randFloat(0.2, 0.4);
+    const z_b = bench_utils.randFloat(0.1, 0.3);
+    
+    const vec3_za_a = zmath_gd.f32x4(x_a, y_a, z_a, 0.0);
+    const vec3_za_b = zmath_gd.f32x4(x_b, y_b, z_b, 0.0);
     const dot_result = zmath_gd.dot3(vec3_za_a, vec3_za_b);
     var result = dot_result[0];
-    std.mem.doNotOptimizeAway(&result);
+    bench_utils.consume(f32, result);
 }
 
 // --- Vector Cross Product ---
@@ -351,17 +394,22 @@ pub fn bench_vec3_cross_batched_aos_zalgebra(allocator: std.mem.Allocator) void 
     defer allocator.free(vecs_b);
     defer allocator.free(results);
     
-    // Initialize data
+    // Initialize data with runtime values
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
-        vecs_a[i] = zalgebra.Vec3.new(0.1 + fi * 0.001, 0.2 + fi * 0.001, 0.3 + fi * 0.001);
-        vecs_b[i] = zalgebra.Vec3.new(0.4 + fi * 0.001, 0.5 + fi * 0.001, 0.6 + fi * 0.001);
+        const noise_a = bench_utils.randFloat(-0.001, 0.001);
+        const noise_b = bench_utils.randFloat(-0.001, 0.001);
+        vecs_a[i] = zalgebra.Vec3.new(0.1 + fi * 0.001 + noise_a, 0.2 + fi * 0.001 + noise_a, 0.3 + fi * 0.001 + noise_a);
+        vecs_b[i] = zalgebra.Vec3.new(0.4 + fi * 0.001 + noise_b, 0.5 + fi * 0.001 + noise_b, 0.6 + fi * 0.001 + noise_b);
     }
     
     for (0..BATCH_SIZE) |i| {
         results[i] = zalgebra.Vec3.cross(vecs_a[i], vecs_b[i]);
     }
-    std.mem.doNotOptimizeAway(&results[0]);
+    
+    // Consume all results to prevent DCE
+    const accumulator = bench_utils.accumulateVec3Components(zalgebra.Vec3, results, bench_utils.extractZalgebraVec3);
+    bench_utils.consume(f32, accumulator);
 }
 
 pub fn bench_vec3_cross_batched_aos_zm(allocator: std.mem.Allocator) void {
@@ -372,17 +420,22 @@ pub fn bench_vec3_cross_batched_aos_zm(allocator: std.mem.Allocator) void {
     defer allocator.free(vecs_b);
     defer allocator.free(results);
     
-    // Initialize data
+    // Initialize data with runtime values
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
-        vecs_a[i] = zm.Vec3f{ 0.1 + fi * 0.001, 0.2 + fi * 0.001, 0.3 + fi * 0.001 };
-        vecs_b[i] = zm.Vec3f{ 0.4 + fi * 0.001, 0.5 + fi * 0.001, 0.6 + fi * 0.001 };
+        const noise_a = bench_utils.randFloat(-0.001, 0.001);
+        const noise_b = bench_utils.randFloat(-0.001, 0.001);
+        vecs_a[i] = zm.Vec3f{ 0.1 + fi * 0.001 + noise_a, 0.2 + fi * 0.001 + noise_a, 0.3 + fi * 0.001 + noise_a };
+        vecs_b[i] = zm.Vec3f{ 0.4 + fi * 0.001 + noise_b, 0.5 + fi * 0.001 + noise_b, 0.6 + fi * 0.001 + noise_b };
     }
     
     for (0..BATCH_SIZE) |i| {
         results[i] = zm.vec.cross(vecs_a[i], vecs_b[i]);
     }
-    std.mem.doNotOptimizeAway(&results[0]);
+    
+    // Consume all results to prevent DCE
+    const accumulator = bench_utils.accumulateVec3Components(zm.Vec3f, results, bench_utils.extractZmVec3);
+    bench_utils.consume(f32, accumulator);
 }
 
 pub fn bench_vec3_cross_batched_aos_zmath(allocator: std.mem.Allocator) void {
