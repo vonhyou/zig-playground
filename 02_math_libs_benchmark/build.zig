@@ -31,6 +31,9 @@ pub fn build(b: *std.Build) void {
     const zm = b.dependency("zm", opts);
     exe.root_module.addImport("zm", zm.module("zm"));
 
+    const zmath = b.dependency("zmath", opts);
+    exe.root_module.addImport("zmath_gd", zmath.module("root"));
+
     b.installArtifact(exe);
 
     const run_step = b.step("run", "Run the app");
