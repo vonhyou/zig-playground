@@ -77,11 +77,6 @@ pub fn bench_quat_slerp_zm(allocator: std.mem.Allocator) void {
     std.mem.doNotOptimizeAway(&result);
 }
 
-pub fn bench_quat_slerp_zmath(allocator: std.mem.Allocator) void {
-    _ = allocator;
-    const quat_a = zmath_gd.quatFromAxisAngle(zmath_gd.f32x4(1.0, 0.0, 0.0, 0.0), std.math.pi / 4.0);
-    const quat_b = zmath_gd.quatFromAxisAngle(zmath_gd.f32x4(0.0, 1.0, 0.0, 0.0), std.math.pi / 6.0);
-    // zmath does not have a direct slerp, this is a placeholder
-    var result = zmath_gd.lerp(quat_a, quat_b, 0.5);
-    std.mem.doNotOptimizeAway(&result);
-}
+// Note: A slerp benchmark for zmath is intentionally omitted.
+// zmath does not provide a native slerp function, and using lerp
+// would result in an inaccurate and misleading performance comparison.

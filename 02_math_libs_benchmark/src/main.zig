@@ -64,7 +64,6 @@ const BENCHMARKS = [_]BenchmarkInfo{
     .{ .name = "Quat Norm: zmath", .func = quaternion.bench_quat_normalize_zmath, .category = .quat },
     .{ .name = "Quat Slerp: zalgebra", .func = quaternion.bench_quat_slerp_zalgebra, .category = .quat },
     .{ .name = "Quat Slerp: zm", .func = quaternion.bench_quat_slerp_zm, .category = .quat },
-    .{ .name = "Quat Slerp: zmath", .func = quaternion.bench_quat_slerp_zmath, .category = .quat },
 
     // --- GameDev Operations ---
     .{ .name = "Look At: zalgebra", .func = gamedev.bench_look_at_zalgebra, .category = .gamedev },
