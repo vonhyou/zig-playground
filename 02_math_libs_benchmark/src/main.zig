@@ -5,12 +5,13 @@ const config = @import("config.zig");
 const vector = @import("benchmarks/vector.zig");
 const matrix = @import("benchmarks/matrix.zig");
 const quaternion = @import("benchmarks/quaternion.zig");
-const zmath = @import("benchmarks/zmath.zig");
+const gamedev = @import("benchmarks/gamedev.zig");
 
 const BenchmarkCategory = enum {
     vec,
     matrix,
     quat,
+    gamedev,
 };
 
 const BenchmarkInfo = struct {
@@ -20,143 +21,91 @@ const BenchmarkInfo = struct {
 };
 
 const BENCHMARKS = [_]BenchmarkInfo{
-    // Vector operations
-    .{ .name = "zalgebra vec mul", .func = vector.bench_zalgebra_vec_mul, .category = .vec },
-    .{ .name = "zm vec mul", .func = vector.bench_zm_vec_mul, .category = .vec },
-    .{ .name = "zmath vec mul", .func = zmath.bench_zmath_vec_mul, .category = .vec },
-    .{ .name = "zalgebra vec dot", .func = vector.bench_zalgebra_vec_dot, .category = .vec },
-    .{ .name = "zm vec dot", .func = vector.bench_zm_vec_dot, .category = .vec },
-    .{ .name = "zmath vec dot", .func = zmath.bench_zmath_vec_dot, .category = .vec },
-    .{ .name = "zalgebra vec cross", .func = vector.bench_zalgebra_vec_cross, .category = .vec },
-    .{ .name = "zm vec cross", .func = vector.bench_zm_vec_cross, .category = .vec },
-    .{ .name = "zmath vec cross", .func = zmath.bench_zmath_vec_cross, .category = .vec },
-    .{ .name = "zalgebra vec len", .func = vector.bench_zalgebra_vec_len, .category = .vec },
-    .{ .name = "zm vec len", .func = vector.bench_zm_vec_len, .category = .vec },
-    .{ .name = "zmath vec len", .func = zmath.bench_zmath_vec_len, .category = .vec },
-    .{ .name = "zalgebra vec normalize", .func = vector.bench_zalgebra_vec_normalize, .category = .vec },
-    .{ .name = "zm vec normalize", .func = vector.bench_zm_vec_normalize, .category = .vec },
-    .{ .name = "zmath vec normalize", .func = zmath.bench_zmath_vec_normalize, .category = .vec },
-    .{ .name = "zalgebra vec lerp", .func = vector.bench_zalgebra_vec_lerp, .category = .vec },
-    .{ .name = "zm vec lerp", .func = vector.bench_zm_vec_lerp, .category = .vec },
-    .{ .name = "zmath vec lerp", .func = zmath.bench_zmath_vec_lerp, .category = .vec },
-    .{ .name = "zalgebra vec distance", .func = vector.bench_zalgebra_vec_distance, .category = .vec },
-    .{ .name = "zm vec distance", .func = vector.bench_zm_vec_distance, .category = .vec },
-    .{ .name = "zmath vec distance", .func = zmath.bench_zmath_vec_distance, .category = .vec },
-    .{ .name = "zalgebra varying data", .func = vector.bench_zalgebra_varying_data, .category = .vec },
-    .{ .name = "zm varying data", .func = vector.bench_zm_varying_data, .category = .vec },
-    .{ .name = "zmath varying data", .func = zmath.bench_zmath_varying_data, .category = .vec },
+    // --- Vector Operations ---
+    .{ .name = "Vector Mul: zalgebra", .func = vector.bench_vec_mul_zalgebra, .category = .vec },
+    .{ .name = "Vector Mul: zm", .func = vector.bench_vec_mul_zm, .category = .vec },
+    .{ .name = "Vector Mul: zmath", .func = vector.bench_vec_mul_zmath, .category = .vec },
+    .{ .name = "Vector Dot: zalgebra", .func = vector.bench_vec_dot_zalgebra, .category = .vec },
+    .{ .name = "Vector Dot: zm", .func = vector.bench_vec_dot_zm, .category = .vec },
+    .{ .name = "Vector Dot: zmath", .func = vector.bench_vec_dot_zmath, .category = .vec },
+    .{ .name = "Vector Cross: zalgebra", .func = vector.bench_vec_cross_zalgebra, .category = .vec },
+    .{ .name = "Vector Cross: zm", .func = vector.bench_vec_cross_zm, .category = .vec },
+    .{ .name = "Vector Cross: zmath", .func = vector.bench_vec_cross_zmath, .category = .vec },
+    .{ .name = "Vec Length: zalgebra", .func = vector.bench_vec_len_zalgebra, .category = .vec },
+    .{ .name = "Vec Length: zm", .func = vector.bench_vec_len_zm, .category = .vec },
+    .{ .name = "Vec Length: zmath", .func = vector.bench_vec_len_zmath, .category = .vec },
+    .{ .name = "Vec Norm: zalgebra", .func = vector.bench_vec_normalize_zalgebra, .category = .vec },
+    .{ .name = "Vec Norm: zm", .func = vector.bench_vec_normalize_zm, .category = .vec },
+    .{ .name = "Vec Norm: zmath", .func = vector.bench_vec_normalize_zmath, .category = .vec },
+    .{ .name = "Vec Lerp: zalgebra", .func = vector.bench_vec_lerp_zalgebra, .category = .vec },
+    .{ .name = "Vec Lerp: zm", .func = vector.bench_vec_lerp_zm, .category = .vec },
+    .{ .name = "Vec Lerp: zmath", .func = vector.bench_vec_lerp_zmath, .category = .vec },
+    .{ .name = "Vec Dist: zalgebra", .func = vector.bench_vec_distance_zalgebra, .category = .vec },
+    .{ .name = "Vec Dist: zm", .func = vector.bench_vec_distance_zm, .category = .vec },
+    .{ .name = "Vec Dist: zmath", .func = vector.bench_vec_distance_zmath, .category = .vec },
 
-    // Matrix operations
-    .{ .name = "zalgebra mat mul", .func = matrix.bench_zalgebra_mat_mul, .category = .matrix },
-    .{ .name = "zm mat mul", .func = matrix.bench_zm_mat_mul, .category = .matrix },
-    .{ .name = "zmath mat mul", .func = zmath.bench_zmath_mat_mul, .category = .matrix },
-    .{ .name = "zalgebra mat transpose", .func = matrix.bench_zalgebra_mat_transpose, .category = .matrix },
-    .{ .name = "zm mat transpose", .func = matrix.bench_zm_mat_transpose, .category = .matrix },
-    .{ .name = "zmath mat transpose", .func = zmath.bench_zmath_mat_transpose, .category = .matrix },
-    .{ .name = "zalgebra transform matrix", .func = matrix.bench_zalgebra_transform_matrix, .category = .matrix },
-    .{ .name = "zm transform matrix", .func = matrix.bench_zm_transform_matrix, .category = .matrix },
-    .{ .name = "zmath transform matrix", .func = zmath.bench_zmath_transform_matrix, .category = .matrix },
-    .{ .name = "zalgebra matrix chain", .func = matrix.bench_zalgebra_matrix_chain, .category = .matrix },
-    .{ .name = "zm matrix chain", .func = matrix.bench_zm_matrix_chain, .category = .matrix },
-    .{ .name = "zmath matrix chain", .func = zmath.bench_zmath_matrix_chain, .category = .matrix },
-    .{ .name = "zmath look at", .func = zmath.bench_zmath_look_at, .category = .matrix },
+    // --- Matrix Operations ---
+    .{ .name = "Mat Mul: zalgebra", .func = matrix.bench_mat_mul_zalgebra, .category = .matrix },
+    .{ .name = "Mat Mul: zm", .func = matrix.bench_mat_mul_zm, .category = .matrix },
+    .{ .name = "Mat Mul: zmath", .func = matrix.bench_mat_mul_zmath, .category = .matrix },
+    .{ .name = "Mat Trans: zalgebra", .func = matrix.bench_mat_transpose_zalgebra, .category = .matrix },
+    .{ .name = "Mat Trans: zm", .func = matrix.bench_mat_transpose_zm, .category = .matrix },
+    .{ .name = "Mat Trans: zmath", .func = matrix.bench_mat_transpose_zmath, .category = .matrix },
+    .{ .name = "Mat Chain: zalgebra", .func = matrix.bench_mat_chain_zalgebra, .category = .matrix },
+    .{ .name = "Mat Chain: zm", .func = matrix.bench_mat_chain_zm, .category = .matrix },
+    .{ .name = "Mat Chain: zmath", .func = matrix.bench_mat_chain_zmath, .category = .matrix },
 
-    // Quaternion operations
-    .{ .name = "zalgebra quat mul", .func = quaternion.bench_zalgebra_quat_mul, .category = .quat },
-    .{ .name = "zm quat mul", .func = quaternion.bench_zm_quat_mul, .category = .quat },
-    .{ .name = "zmath quat mul", .func = zmath.bench_zmath_quat_mul, .category = .quat },
-    .{ .name = "zalgebra quat normalize", .func = quaternion.bench_zalgebra_quat_normalize, .category = .quat },
-    .{ .name = "zm quat normalize", .func = quaternion.bench_zm_quat_normalize, .category = .quat },
-    .{ .name = "zmath quat normalize", .func = zmath.bench_zmath_quat_normalize, .category = .quat },
-};
+    // --- Quaternion Operations ---
+    .{ .name = "Quat Mul: zalgebra", .func = quaternion.bench_quat_mul_zalgebra, .category = .quat },
+    .{ .name = "Quat Mul: zm", .func = quaternion.bench_quat_mul_zm, .category = .quat },
+    .{ .name = "Quat Mul: zmath", .func = quaternion.bench_quat_mul_zmath, .category = .quat },
+    .{ .name = "Quat Norm: zalgebra", .func = quaternion.bench_quat_normalize_zalgebra, .category = .quat },
+    .{ .name = "Quat Norm: zm", .func = quaternion.bench_quat_normalize_zm, .category = .quat },
+    .{ .name = "Quat Norm: zmath", .func = quaternion.bench_quat_normalize_zmath, .category = .quat },
+    .{ .name = "Quat Slerp: zalgebra", .func = quaternion.bench_quat_slerp_zalgebra, .category = .quat },
+    .{ .name = "Quat Slerp: zm", .func = quaternion.bench_quat_slerp_zm, .category = .quat },
+    .{ .name = "Quat Slerp: zmath", .func = quaternion.bench_quat_slerp_zmath, .category = .quat },
 
-// Optional SIMD benchmarks for zmath (--simd flag)
-// These use end-to-end F32x4 operations to demonstrate zmath's SIMD-optimized performance
-const SIMD_BENCHMARKS = [_]BenchmarkInfo{
-    .{ .name = "zmath SIMD vec ops", .func = zmath.bench_zmath_simd_vec_ops, .category = .vec },
-    .{ .name = "zmath SIMD mat chain", .func = zmath.bench_zmath_simd_mat_chain, .category = .matrix },
+    // --- GameDev Operations ---
+    .{ .name = "Look At: zalgebra", .func = gamedev.bench_look_at_zalgebra, .category = .gamedev },
+    .{ .name = "Look At: zm", .func = gamedev.bench_look_at_zm, .category = .gamedev },
+    .{ .name = "Look At: zmath", .func = gamedev.bench_look_at_zmath, .category = .gamedev },
+    .{ .name = "SIMD Vec Ops: zmath", .func = gamedev.bench_simd_vec_ops_zmath, .category = .gamedev },
+    .{ .name = "SIMD Mat Chain: zmath", .func = gamedev.bench_simd_mat_chain_zmath, .category = .gamedev },
 };
 
 fn printHelp(writer: anytype) !void {
     try writer.writeAll("Math Library Benchmark Tool\n");
     try writer.writeAll("============================\n\n");
-    try writer.writeAll("Usage: zig build run -- [OPTION] [FLAGS]\n\n");
+    try writer.writeAll("Usage: zig build run -- [OPTION]\n\n");
     try writer.writeAll("Available options:\n");
-    try writer.writeAll("  full    Run scalar parity benchmarks (default) or SIMD benchmarks with --simd\n");
-    try writer.writeAll("  vec     Run scalar parity vector benchmarks or SIMD vector benchmarks with --simd\n");
-    try writer.writeAll("  matrix  Run scalar parity matrix benchmarks or SIMD matrix benchmarks with --simd\n");
-    try writer.writeAll("  quat    Run scalar parity quaternion benchmarks or SIMD quaternion benchmarks with --simd\n");
-    try writer.writeAll("  help    Show this help message\n\n");
-    try writer.writeAll("Available flags:\n");
-    try writer.writeAll("  --simd  Run SIMD benchmarks only (replaces scalar benchmarks)\n\n");
-    try writer.writeAll("Benchmark modes:\n");
-    try writer.writeAll("  Default mode: Runs scalar parity benchmarks across all libraries using f32 types.\n");
-    try writer.writeAll("  SIMD mode:    Runs zmath SIMD-optimized benchmarks only (end-to-end F32x4).\n\n");
-    try writer.writeAll("If no option is provided, this help message will be displayed.\n\n");
-    try writer.writeAll("Examples:\n");
-    try writer.writeAll("  zig build run -- full         # Scalar parity benchmarks\n");
-    try writer.writeAll("  zig build run -- full --simd  # SIMD benchmarks only\n");
-    try writer.writeAll("  zig build run -- vec          # Scalar vector benchmarks\n");
-    try writer.writeAll("  zig build run -- matrix --simd # SIMD matrix benchmarks\n");
+    try writer.writeAll("  all      Run all benchmarks (default)\n");
+    try writer.writeAll("  vec      Run vector benchmarks\n");
+    try writer.writeAll("  matrix   Run matrix benchmarks\n");
+    try writer.writeAll("  quat     Run quaternion benchmarks\n");
+    try writer.writeAll("  gamedev  Run gamedev-specific benchmarks\n");
+    try writer.writeAll("  help     Show this help message\n\n");
 }
 
-fn runBenchmarks(allocator: std.mem.Allocator, writer: anytype, category: ?BenchmarkCategory, simd_mode: bool) !void {
+fn runBenchmarks(allocator: std.mem.Allocator, writer: anytype, category: ?BenchmarkCategory) !void {
     var bench = zbench.Benchmark.init(allocator, config.BENCHMARK_CONFIG);
     defer bench.deinit();
 
-    if (simd_mode) {
-        // SIMD mode: register ONLY SIMD benchmarks
-        for (SIMD_BENCHMARKS) |benchmark_info| {
-            if (category == null or benchmark_info.category == category.?) {
-                try bench.add(benchmark_info.name, benchmark_info.func, .{});
-            }
-        }
-    } else {
-        // Scalar parity mode: register ONLY scalar parity benchmarks (excluding redundant/non-parity entries)
-        for (BENCHMARKS) |benchmark_info| {
-            if (category == null or benchmark_info.category == category.?) {
-                // Skip varying data benchmarks
-                if (std.mem.indexOf(u8, benchmark_info.name, "varying data") != null) continue;
-                // Skip transform matrix benchmarks
-                if (std.mem.indexOf(u8, benchmark_info.name, "transform matrix") != null) continue;
-                // Skip zmath look at benchmark (zmath-only, not cross-library parity)
-                if (std.mem.eql(u8, benchmark_info.name, "zmath look at")) continue;
-                
-                try bench.add(benchmark_info.name, benchmark_info.func, .{});
-            }
+    for (BENCHMARKS) |benchmark_info| {
+        if (category == null or benchmark_info.category == category.?) {
+            try bench.add(benchmark_info.name, benchmark_info.func, .{});
         }
     }
 
     if (category) |cat| {
         switch (cat) {
-            .vec => {
-                if (simd_mode) {
-                    try writer.writeAll("\n=== Vector Operations SIMD Benchmarks ===\n");
-                } else {
-                    try writer.writeAll("\n=== Vector Operations Scalar Parity Benchmarks ===\n");
-                }
-            },
-            .matrix => {
-                if (simd_mode) {
-                    try writer.writeAll("\n=== Matrix Operations SIMD Benchmarks ===\n");
-                } else {
-                    try writer.writeAll("\n=== Matrix Operations Scalar Parity Benchmarks ===\n");
-                }
-            },
-            .quat => {
-                if (simd_mode) {
-                    try writer.writeAll("\n=== Quaternion Operations SIMD Benchmarks ===\n");
-                } else {
-                    try writer.writeAll("\n=== Quaternion Operations Scalar Parity Benchmarks ===\n");
-                }
-            },
+            .vec => try writer.writeAll("\n=== Vector Operations ===\n"),
+            .matrix => try writer.writeAll("\n=== Matrix Operations ===\n"),
+            .quat => try writer.writeAll("\n=== Quaternion Operations ===\n"),
+            .gamedev => try writer.writeAll("\n=== GameDev Operations ===\n"),
         }
     } else {
-        if (simd_mode) {
-            try writer.writeAll("\n=== SIMD Benchmarks ===\n");
-        } else {
-            try writer.writeAll("\n=== Scalar Parity Benchmarks ===\n");
-        }
+        try writer.writeAll("\n=== All Benchmarks ===\n");
     }
 
     try writer.writeAll("\n");
@@ -174,38 +123,26 @@ pub fn main() !void {
     const args = try std.process.argsAlloc(allocator);
     defer std.process.argsFree(allocator, args);
 
-    if (args.len < 2) {
+    if (args.len < 2 or std.mem.eql(u8, args[1], "help")) {
         try printHelp(writer);
         return;
     }
 
     const command = args[1];
-    var simd_mode = false;
 
-    // Check for --simd flag
-    for (args) |arg| {
-        if (std.mem.eql(u8, arg, "--simd")) {
-            simd_mode = true;
-            break;
-        }
-    }
-
-    if (std.mem.eql(u8, command, "full")) {
-        try runBenchmarks(allocator, writer, null, simd_mode);
+    if (std.mem.eql(u8, command, "all")) {
+        try runBenchmarks(allocator, writer, null);
     } else if (std.mem.eql(u8, command, "vec")) {
-        try runBenchmarks(allocator, writer, .vec, simd_mode);
+        try runBenchmarks(allocator, writer, .vec);
     } else if (std.mem.eql(u8, command, "matrix")) {
-        try runBenchmarks(allocator, writer, .matrix, simd_mode);
+        try runBenchmarks(allocator, writer, .matrix);
     } else if (std.mem.eql(u8, command, "quat")) {
-        try runBenchmarks(allocator, writer, .quat, simd_mode);
-    } else if (std.mem.eql(u8, command, "help")) {
-        try printHelp(writer);
+        try runBenchmarks(allocator, writer, .quat);
+    } else if (std.mem.eql(u8, command, "gamedev")) {
+        try runBenchmarks(allocator, writer, .gamedev);
     } else {
-        try writer.writeAll("Error: Invalid option '");
-        try writer.writeAll(command);
-        try writer.writeAll("'\n\n");
+        try writer.print("Error: Invalid option '{s}'\n\n", .{command});
         try printHelp(writer);
         std.process.exit(1);
     }
 }
-
