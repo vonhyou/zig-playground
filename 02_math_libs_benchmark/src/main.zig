@@ -60,6 +60,10 @@ const BENCHMARKS = [_]BenchmarkInfo{
     .{ .name = "Vec3 Sum Reduction: zalgebra", .func = vector.bench_vec3_sum_reduction_zalgebra, .category = .vec },
     .{ .name = "Vec3 Sum Reduction: zm", .func = vector.bench_vec3_sum_reduction_zm, .category = .vec },
     .{ .name = "Vec3 Sum Reduction: zmath", .func = vector.bench_vec3_sum_reduction_zmath, .category = .vec },
+    
+    // --- Enhanced SIMD/SoA Operations (zmath native) ---
+    .{ .name = "Vec3 Dot SIMD SoA Optimized: zmath", .func = vector.bench_vec3_dot_simd_soa_zmath_optimized, .category = .vec },
+    .{ .name = "Vec3 Norm SIMD SoA Optimized: zmath", .func = vector.bench_vec3_normalize_simd_soa_zmath_optimized, .category = .vec },
 
     // --- Matrix Operations ---
     .{ .name = "Mat Mul: zalgebra", .func = matrix.bench_mat_mul_zalgebra, .category = .matrix },

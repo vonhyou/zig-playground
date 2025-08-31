@@ -32,8 +32,10 @@ zig build run -- help
 For optimized benchmarks, use:
 ```bash
 zig build run -Doptimize=ReleaseFast
-zig build run -Doptimize=ReleaseFast -Dcpu=native
+zig build run -Doptimize=ReleaseFast -Dcpu_native=true  # Enable native CPU optimizations
 ```
+
+**Note**: The `-Dcpu_native=true` option enables native CPU feature detection and SIMD optimizations. Use this for maximum performance evaluation on your specific hardware, but keep in mind results may not be portable across different systems.
 
 ## Supported libraries
 
@@ -93,6 +95,9 @@ zig build run -Doptimize=ReleaseFast -Dcpu=native
 ## Methodology
 
 The benchmark methodology includes:
+- **Anti-optimization measures**: `blackBox()` and `consume()` functions prevent constant folding and dead code elimination
+- **Runtime data generation**: All inputs are generated at runtime using seeded RNG to prevent compile-time precomputation
+- **Full workload consumption**: Batched operations aggregate all results via scalar accumulation to ensure complete execution
 - Warmup runs with initial results discarded
 - Multiple sample measurements for statistical accuracy
 - Kernel-only timing (excluding setup/teardown overhead)

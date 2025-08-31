@@ -2,6 +2,7 @@ const std = @import("std");
 const zalgebra = @import("zalgebra");
 const zm = @import("zm");
 const zmath_gd = @import("zmath_gd");
+const bench_utils = @import("../bench_utils.zig");
 
 // --- Quaternion Multiplication ---
 pub fn bench_quat_mul_zalgebra(allocator: std.mem.Allocator) void {
@@ -26,10 +27,16 @@ pub fn bench_quat_mul_zm(allocator: std.mem.Allocator) void {
 
 pub fn bench_quat_mul_zmath(allocator: std.mem.Allocator) void {
     _ = allocator;
-    const quat_a = zmath_gd.f32x4(0.0, 0.0, 0.0, 1.0);
-    const quat_b = zmath_gd.quatFromAxisAngle(zmath_gd.f32x4(0.0, 1.0, 0.0, 0.0), 0.5);
+    const angle_a = bench_utils.randFloat(std.math.pi / 8.0, std.math.pi / 6.0);
+    const angle_b = bench_utils.randFloat(std.math.pi / 6.0, std.math.pi / 4.0);
+    const axis_x = bench_utils.randFloat(-0.1, 0.1);
+    const axis_y = bench_utils.randFloat(0.9, 1.1);
+    const axis_z = bench_utils.randFloat(-0.1, 0.1);
+    
+    const quat_a = zmath_gd.quatFromAxisAngle(zmath_gd.f32x4(1.0, 0.0, 0.0, 0.0), angle_a);
+    const quat_b = zmath_gd.quatFromAxisAngle(zmath_gd.f32x4(axis_x, axis_y, axis_z, 0.0), angle_b);
     var result = zmath_gd.qmul(quat_a, quat_b);
-    std.mem.doNotOptimizeAway(&result);
+    bench_utils.consume(zmath_gd.Quat, result);
 }
 
 // --- Quaternion Normalization ---

@@ -2,41 +2,44 @@ const std = @import("std");
 const zalgebra = @import("zalgebra");
 const zm = @import("zm");
 const zmath_gd = @import("zmath_gd");
+const bench_utils = @import("../bench_utils.zig");
 
 // --- Matrix Multiplication ---
 pub fn bench_mat_mul_zalgebra(allocator: std.mem.Allocator) void {
     _ = allocator;
+    const trans_x = bench_utils.randFloat(0.8, 1.2);
+    const trans_y = bench_utils.randFloat(1.8, 2.2);
+    const trans_z = bench_utils.randFloat(2.8, 3.2);
+    
     const mat_a = zalgebra.Mat4.identity();
-    const translation_vec = zalgebra.Vec3.new(1, 2, 3);
+    const translation_vec = zalgebra.Vec3.new(trans_x, trans_y, trans_z);
     const mat_b = zalgebra.Mat4.fromTranslate(translation_vec);
     var result = zalgebra.Mat4.mul(mat_a, mat_b);
-    std.mem.doNotOptimizeAway(&result);
+    bench_utils.consume(zalgebra.Mat4, result);
 }
 
 pub fn bench_mat_mul_zm(allocator: std.mem.Allocator) void {
     _ = allocator;
+    const trans_x = bench_utils.randFloat(0.8, 1.2);
+    const trans_y = bench_utils.randFloat(1.8, 2.2);
+    const trans_z = bench_utils.randFloat(2.8, 3.2);
+    
     const mat_a = zm.Mat4f.identity();
-    const mat_b = zm.Mat4f.translation(1, 2, 3);
+    const mat_b = zm.Mat4f.translation(trans_x, trans_y, trans_z);
     var result = zm.Mat4f.multiply(mat_a, mat_b);
-    std.mem.doNotOptimizeAway(&result);
+    bench_utils.consume(zm.Mat4f, result);
 }
 
 pub fn bench_mat_mul_zmath(allocator: std.mem.Allocator) void {
     _ = allocator;
-    const mat_a = zmath_gd.Mat{
-        zmath_gd.f32x4(1.0, 2.0, 3.0, 4.0),
-        zmath_gd.f32x4(5.0, 6.0, 7.0, 8.0),
-        zmath_gd.f32x4(9.0, 10.0, 11.0, 12.0),
-        zmath_gd.f32x4(13.0, 14.0, 15.0, 16.0),
-    };
-    const mat_b = zmath_gd.Mat{
-        zmath_gd.f32x4(17.0, 18.0, 19.0, 20.0),
-        zmath_gd.f32x4(21.0, 22.0, 23.0, 24.0),
-        zmath_gd.f32x4(25.0, 26.0, 27.0, 28.0),
-        zmath_gd.f32x4(29.0, 30.0, 31.0, 32.0),
-    };
+    const trans_x = bench_utils.randFloat(0.8, 1.2);
+    const trans_y = bench_utils.randFloat(1.8, 2.2);
+    const trans_z = bench_utils.randFloat(2.8, 3.2);
+    
+    const mat_a = zmath_gd.identity();
+    const mat_b = zmath_gd.translation(trans_x, trans_y, trans_z);
     var result = zmath_gd.mul(mat_a, mat_b);
-    std.mem.doNotOptimizeAway(&result);
+    bench_utils.consume(zmath_gd.Mat, result);
 }
 
 // --- Matrix Transpose ---

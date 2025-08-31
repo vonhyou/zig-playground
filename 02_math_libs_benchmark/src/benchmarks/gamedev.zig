@@ -2,33 +2,51 @@ const std = @import("std");
 const zalgebra = @import("zalgebra");
 const zm = @import("zm");
 const zmath_gd = @import("zmath_gd");
+const bench_utils = @import("../bench_utils.zig");
 
 // --- SIMD Vector Operations ---
 pub fn bench_simd_vec_ops_zmath(allocator: std.mem.Allocator) void {
     _ = allocator;
-    const vec_a = zmath_gd.f32x4(0.2, 0.3, 0.4, 0.0);
-    const vec_b = zmath_gd.f32x4(0.4, 0.3, 0.2, 0.0);
+    const x_a = bench_utils.randFloat(0.1, 0.3);
+    const y_a = bench_utils.randFloat(0.2, 0.4);
+    const z_a = bench_utils.randFloat(0.3, 0.5);
+    const x_b = bench_utils.randFloat(0.3, 0.5);
+    const y_b = bench_utils.randFloat(0.2, 0.4);
+    const z_b = bench_utils.randFloat(0.1, 0.3);
+    
+    const vec_a = zmath_gd.f32x4(x_a, y_a, z_a, 0.0);
+    const vec_b = zmath_gd.f32x4(x_b, y_b, z_b, 0.0);
     const dot_result = zmath_gd.dot3(vec_a, vec_b);
     const cross_result = zmath_gd.cross3(vec_a, vec_b);
-    const scale = zmath_gd.f32x4s(0.1);
-    const offset = zmath_gd.f32x4s(1.0);
+    const scale_val = bench_utils.randFloat(0.05, 0.15);
+    const offset_val = bench_utils.randFloat(0.8, 1.2);
+    const scale = zmath_gd.f32x4s(scale_val);
+    const offset = zmath_gd.f32x4s(offset_val);
     var result = dot_result * (scale * cross_result + offset);
-    std.mem.doNotOptimizeAway(&result);
+    bench_utils.consume(zmath_gd.Vec, result);
 }
 
 // --- SIMD Matrix Chain ---
 pub fn bench_simd_mat_chain_zmath(allocator: std.mem.Allocator) void {
     _ = allocator;
-    const rot_x = zmath_gd.rotationX(0.1);
-    const rot_y = zmath_gd.rotationY(0.2);
-    const rot_z = zmath_gd.rotationZ(0.3);
-    const trans = zmath_gd.translation(1.0, 2.0, 3.0);
-    const scale = zmath_gd.scaling(2.0, 2.0, 2.0);
+    const angle_x = bench_utils.randFloat(0.05, 0.15);
+    const angle_y = bench_utils.randFloat(0.15, 0.25);
+    const angle_z = bench_utils.randFloat(0.25, 0.35);
+    const trans_x = bench_utils.randFloat(0.8, 1.2);
+    const trans_y = bench_utils.randFloat(1.8, 2.2);
+    const trans_z = bench_utils.randFloat(2.8, 3.2);
+    const scale_val = bench_utils.randFloat(1.8, 2.2);
+    
+    const rot_x = zmath_gd.rotationX(angle_x);
+    const rot_y = zmath_gd.rotationY(angle_y);
+    const rot_z = zmath_gd.rotationZ(angle_z);
+    const trans = zmath_gd.translation(trans_x, trans_y, trans_z);
+    const scale = zmath_gd.scaling(scale_val, scale_val, scale_val);
     const temp1 = zmath_gd.mul(rot_x, trans);
     const temp2 = zmath_gd.mul(rot_y, temp1);
     const temp3 = zmath_gd.mul(rot_z, temp2);
     var result = zmath_gd.mul(scale, temp3);
-    std.mem.doNotOptimizeAway(&result);
+    bench_utils.consume(zmath_gd.Mat, result);
 }
 
 pub fn bench_look_at_zalgebra(allocator: std.mem.Allocator) void {
