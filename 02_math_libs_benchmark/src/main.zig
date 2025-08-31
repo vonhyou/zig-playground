@@ -70,16 +70,10 @@ const BENCHMARKS = [_]BenchmarkInfo{
 };
 
 // Optional SIMD benchmarks for zmath (--simd flag)
-// Note: These are placeholder functions - in practice they would use end-to-end F32x4 operations
+// These use end-to-end F32x4 operations to demonstrate zmath's SIMD-optimized performance
 const SIMD_BENCHMARKS = [_]BenchmarkInfo{
-    .{ .name = "zmath SIMD vec mul", .func = zmath.bench_zmath_vec_mul, .category = .vec },
-    .{ .name = "zmath SIMD vec cross", .func = zmath.bench_zmath_vec_cross, .category = .vec },
-    .{ .name = "zmath SIMD vec normalize", .func = zmath.bench_zmath_vec_normalize, .category = .vec },
-    .{ .name = "zmath SIMD vec lerp", .func = zmath.bench_zmath_vec_lerp, .category = .vec },
-    .{ .name = "zmath SIMD mat mul", .func = zmath.bench_zmath_mat_mul, .category = .matrix },
-    .{ .name = "zmath SIMD mat transpose", .func = zmath.bench_zmath_mat_transpose, .category = .matrix },
-    .{ .name = "zmath SIMD quat mul", .func = zmath.bench_zmath_quat_mul, .category = .quat },
-    .{ .name = "zmath SIMD quat normalize", .func = zmath.bench_zmath_quat_normalize, .category = .quat },
+    .{ .name = "zmath SIMD vec ops", .func = zmath.bench_zmath_simd_vec_ops, .category = .vec },
+    .{ .name = "zmath SIMD mat chain", .func = zmath.bench_zmath_simd_mat_chain, .category = .matrix },
 };
 
 fn printHelp(writer: anytype) !void {
