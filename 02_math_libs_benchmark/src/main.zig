@@ -44,6 +44,23 @@ const BENCHMARKS = [_]BenchmarkInfo{
     .{ .name = "Vec Dist: zm", .func = vector.bench_vec_distance_zm, .category = .vec },
     .{ .name = "Vec Dist: zmath", .func = vector.bench_vec_distance_zmath, .category = .vec },
 
+    // --- Batched Vector Operations (SIMD-focused) ---
+    .{ .name = "Vec3 Dot Batch AoS: zalgebra", .func = vector.bench_vec3_dot_batched_aos_zalgebra, .category = .vec },
+    .{ .name = "Vec3 Dot Batch AoS: zm", .func = vector.bench_vec3_dot_batched_aos_zm, .category = .vec },
+    .{ .name = "Vec3 Dot Batch AoS: zmath", .func = vector.bench_vec3_dot_batched_aos_zmath, .category = .vec },
+    .{ .name = "Vec3 Dot Batch SoA: zalgebra", .func = vector.bench_vec3_dot_batched_soa_zalgebra, .category = .vec },
+    .{ .name = "Vec3 Dot Batch SoA: zm", .func = vector.bench_vec3_dot_batched_soa_zm, .category = .vec },
+    .{ .name = "Vec3 Dot Batch SoA: zmath", .func = vector.bench_vec3_dot_batched_soa_zmath, .category = .vec },
+    .{ .name = "Vec3 Cross Batch AoS: zalgebra", .func = vector.bench_vec3_cross_batched_aos_zalgebra, .category = .vec },
+    .{ .name = "Vec3 Cross Batch AoS: zm", .func = vector.bench_vec3_cross_batched_aos_zm, .category = .vec },
+    .{ .name = "Vec3 Cross Batch AoS: zmath", .func = vector.bench_vec3_cross_batched_aos_zmath, .category = .vec },
+    .{ .name = "Vec3 Norm Batch AoS: zalgebra", .func = vector.bench_vec3_normalize_batched_aos_zalgebra, .category = .vec },
+    .{ .name = "Vec3 Norm Batch AoS: zm", .func = vector.bench_vec3_normalize_batched_aos_zm, .category = .vec },
+    .{ .name = "Vec3 Norm Batch AoS: zmath", .func = vector.bench_vec3_normalize_batched_aos_zmath, .category = .vec },
+    .{ .name = "Vec3 Sum Reduction: zalgebra", .func = vector.bench_vec3_sum_reduction_zalgebra, .category = .vec },
+    .{ .name = "Vec3 Sum Reduction: zm", .func = vector.bench_vec3_sum_reduction_zm, .category = .vec },
+    .{ .name = "Vec3 Sum Reduction: zmath", .func = vector.bench_vec3_sum_reduction_zmath, .category = .vec },
+
     // --- Matrix Operations ---
     .{ .name = "Mat Mul: zalgebra", .func = matrix.bench_mat_mul_zalgebra, .category = .matrix },
     .{ .name = "Mat Mul: zm", .func = matrix.bench_mat_mul_zm, .category = .matrix },
@@ -55,6 +72,14 @@ const BENCHMARKS = [_]BenchmarkInfo{
     .{ .name = "Mat Chain: zm", .func = matrix.bench_mat_chain_zm, .category = .matrix },
     .{ .name = "Mat Chain: zmath", .func = matrix.bench_mat_chain_zmath, .category = .matrix },
 
+    // --- Batched Matrix Operations (SIMD-focused) ---
+    .{ .name = "Mat4×Vec4 Batch AoS: zalgebra", .func = matrix.bench_mat4_vec4_batched_aos_zalgebra, .category = .matrix },
+    .{ .name = "Mat4×Vec4 Batch AoS: zm", .func = matrix.bench_mat4_vec4_batched_aos_zm, .category = .matrix },
+    .{ .name = "Mat4×Vec4 Batch AoS: zmath", .func = matrix.bench_mat4_vec4_batched_aos_zmath, .category = .matrix },
+    .{ .name = "Mat4×Mat4 Batch: zalgebra", .func = matrix.bench_mat4_mul_batched_zalgebra, .category = .matrix },
+    .{ .name = "Mat4×Mat4 Batch: zm", .func = matrix.bench_mat4_mul_batched_zm, .category = .matrix },
+    .{ .name = "Mat4×Mat4 Batch: zmath", .func = matrix.bench_mat4_mul_batched_zmath, .category = .matrix },
+
     // --- Quaternion Operations ---
     .{ .name = "Quat Mul: zalgebra", .func = quaternion.bench_quat_mul_zalgebra, .category = .quat },
     .{ .name = "Quat Mul: zm", .func = quaternion.bench_quat_mul_zm, .category = .quat },
@@ -65,12 +90,27 @@ const BENCHMARKS = [_]BenchmarkInfo{
     .{ .name = "Quat Slerp: zalgebra", .func = quaternion.bench_quat_slerp_zalgebra, .category = .quat },
     .{ .name = "Quat Slerp: zm", .func = quaternion.bench_quat_slerp_zm, .category = .quat },
 
-    // --- GameDev Operations ---
+    // --- Batched Quaternion Operations (SIMD-focused) ---
+    .{ .name = "Quat Mul Batch: zalgebra", .func = quaternion.bench_quat_mul_batched_zalgebra, .category = .quat },
+    .{ .name = "Quat Mul Batch: zm", .func = quaternion.bench_quat_mul_batched_zm, .category = .quat },
+    .{ .name = "Quat Mul Batch: zmath", .func = quaternion.bench_quat_mul_batched_zmath, .category = .quat },
+    .{ .name = "Quat Norm Batch: zalgebra", .func = quaternion.bench_quat_normalize_batched_zalgebra, .category = .quat },
+    .{ .name = "Quat Norm Batch: zm", .func = quaternion.bench_quat_normalize_batched_zm, .category = .quat },
+    .{ .name = "Quat Norm Batch: zmath", .func = quaternion.bench_quat_normalize_batched_zmath, .category = .quat },
+
     .{ .name = "Look At: zalgebra", .func = gamedev.bench_look_at_zalgebra, .category = .gamedev },
     .{ .name = "Look At: zm", .func = gamedev.bench_look_at_zm, .category = .gamedev },
     .{ .name = "Look At: zmath", .func = gamedev.bench_look_at_zmath, .category = .gamedev },
     .{ .name = "SIMD Vec Ops: zmath", .func = gamedev.bench_simd_vec_ops_zmath, .category = .gamedev },
     .{ .name = "SIMD Mat Chain: zmath", .func = gamedev.bench_simd_mat_chain_zmath, .category = .gamedev },
+
+    // --- Memory Layout Operations (SIMD-focused) ---
+    .{ .name = "AoS→SoA Vec3: zalgebra", .func = gamedev.bench_aos_to_soa_vec3_zalgebra, .category = .gamedev },
+    .{ .name = "AoS→SoA Vec3: zm", .func = gamedev.bench_aos_to_soa_vec3_zm, .category = .gamedev },
+    .{ .name = "AoS→SoA Vec3: zmath", .func = gamedev.bench_aos_to_soa_vec3_zmath, .category = .gamedev },
+    .{ .name = "SoA→AoS Vec3: zalgebra", .func = gamedev.bench_soa_to_aos_vec3_zalgebra, .category = .gamedev },
+    .{ .name = "SoA→AoS Vec3: zm", .func = gamedev.bench_soa_to_aos_vec3_zm, .category = .gamedev },
+    .{ .name = "SoA→AoS Vec3: zmath", .func = gamedev.bench_soa_to_aos_vec3_zmath, .category = .gamedev },
 };
 
 fn printHelp(writer: anytype) !void {

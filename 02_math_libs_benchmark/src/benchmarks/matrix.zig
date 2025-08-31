@@ -96,3 +96,135 @@ pub fn bench_mat_chain_zmath(allocator: std.mem.Allocator) void {
     var result = zmath_gd.mul(mat4, zmath_gd.mul(mat3, zmath_gd.mul(mat2, mat1)));
     std.mem.doNotOptimizeAway(&result);
 }
+
+// --- Batched Matrix Operations (SIMD-focused) ---
+
+const BATCH_SIZE = 64; // Smaller batch for matrix ops due to memory usage
+
+// Batched Mat4×Vec4 Transform (AoS layout)
+pub fn bench_mat4_vec4_batched_aos_zalgebra(allocator: std.mem.Allocator) void {
+    const mats = allocator.alloc(zalgebra.Mat4, BATCH_SIZE) catch return;
+    const vecs = allocator.alloc(zalgebra.Vec4, BATCH_SIZE) catch return;
+    const results = allocator.alloc(zalgebra.Vec4, BATCH_SIZE) catch return;
+    defer allocator.free(mats);
+    defer allocator.free(vecs);
+    defer allocator.free(results);
+    
+    // Initialize data
+    for (0..BATCH_SIZE) |i| {
+        const fi = @as(f32, @floatFromInt(i));
+        mats[i] = zalgebra.Mat4.fromTranslate(zalgebra.Vec3.new(fi * 0.01, fi * 0.01, fi * 0.01));
+        vecs[i] = zalgebra.Vec4.new(1.0 + fi * 0.001, 2.0 + fi * 0.001, 3.0 + fi * 0.001, 1.0);
+    }
+    
+    for (0..BATCH_SIZE) |i| {
+        results[i] = zalgebra.Mat4.mulByVec4(mats[i], vecs[i]);
+    }
+    std.mem.doNotOptimizeAway(&results[0]);
+}
+
+pub fn bench_mat4_vec4_batched_aos_zm(allocator: std.mem.Allocator) void {
+    const mats = allocator.alloc(zm.Mat4f, BATCH_SIZE) catch return;
+    const vecs = allocator.alloc(zm.Vec4f, BATCH_SIZE) catch return;
+    const results = allocator.alloc(zm.Vec4f, BATCH_SIZE) catch return;
+    defer allocator.free(mats);
+    defer allocator.free(vecs);
+    defer allocator.free(results);
+    
+    // Initialize data
+    for (0..BATCH_SIZE) |i| {
+        const fi = @as(f32, @floatFromInt(i));
+        mats[i] = zm.Mat4f.translation(fi * 0.01, fi * 0.01, fi * 0.01);
+        vecs[i] = zm.Vec4f{ 1.0 + fi * 0.001, 2.0 + fi * 0.001, 3.0 + fi * 0.001, 1.0 };
+    }
+    
+    for (0..BATCH_SIZE) |i| {
+        results[i] = mats[i].multiplyVec4(vecs[i]);
+    }
+    std.mem.doNotOptimizeAway(&results[0]);
+}
+
+pub fn bench_mat4_vec4_batched_aos_zmath(allocator: std.mem.Allocator) void {
+    const mats = allocator.alloc(zmath_gd.Mat, BATCH_SIZE) catch return;
+    const vecs = allocator.alloc(zmath_gd.Vec, BATCH_SIZE) catch return;
+    const results = allocator.alloc(zmath_gd.Vec, BATCH_SIZE) catch return;
+    defer allocator.free(mats);
+    defer allocator.free(vecs);
+    defer allocator.free(results);
+    
+    // Initialize data
+    for (0..BATCH_SIZE) |i| {
+        const fi = @as(f32, @floatFromInt(i));
+        mats[i] = zmath_gd.translation(fi * 0.01, fi * 0.01, fi * 0.01);
+        vecs[i] = zmath_gd.f32x4(1.0 + fi * 0.001, 2.0 + fi * 0.001, 3.0 + fi * 0.001, 1.0);
+    }
+    
+    for (0..BATCH_SIZE) |i| {
+        results[i] = zmath_gd.mul(vecs[i], mats[i]);
+    }
+    std.mem.doNotOptimizeAway(&results[0]);
+}
+
+// Batched Mat4×Mat4 Multiplication
+pub fn bench_mat4_mul_batched_zalgebra(allocator: std.mem.Allocator) void {
+    const mats_a = allocator.alloc(zalgebra.Mat4, BATCH_SIZE) catch return;
+    const mats_b = allocator.alloc(zalgebra.Mat4, BATCH_SIZE) catch return;
+    const results = allocator.alloc(zalgebra.Mat4, BATCH_SIZE) catch return;
+    defer allocator.free(mats_a);
+    defer allocator.free(mats_b);
+    defer allocator.free(results);
+    
+    // Initialize data
+    for (0..BATCH_SIZE) |i| {
+        const fi = @as(f32, @floatFromInt(i));
+        mats_a[i] = zalgebra.Mat4.fromTranslate(zalgebra.Vec3.new(fi * 0.01, 0, 0));
+        mats_b[i] = zalgebra.Mat4.fromTranslate(zalgebra.Vec3.new(0, fi * 0.01, 0));
+    }
+    
+    for (0..BATCH_SIZE) |i| {
+        results[i] = zalgebra.Mat4.mul(mats_a[i], mats_b[i]);
+    }
+    std.mem.doNotOptimizeAway(&results[0]);
+}
+
+pub fn bench_mat4_mul_batched_zm(allocator: std.mem.Allocator) void {
+    const mats_a = allocator.alloc(zm.Mat4f, BATCH_SIZE) catch return;
+    const mats_b = allocator.alloc(zm.Mat4f, BATCH_SIZE) catch return;
+    const results = allocator.alloc(zm.Mat4f, BATCH_SIZE) catch return;
+    defer allocator.free(mats_a);
+    defer allocator.free(mats_b);
+    defer allocator.free(results);
+    
+    // Initialize data
+    for (0..BATCH_SIZE) |i| {
+        const fi = @as(f32, @floatFromInt(i));
+        mats_a[i] = zm.Mat4f.translation(fi * 0.01, 0, 0);
+        mats_b[i] = zm.Mat4f.translation(0, fi * 0.01, 0);
+    }
+    
+    for (0..BATCH_SIZE) |i| {
+        results[i] = zm.Mat4f.multiply(mats_a[i], mats_b[i]);
+    }
+    std.mem.doNotOptimizeAway(&results[0]);
+}
+
+pub fn bench_mat4_mul_batched_zmath(allocator: std.mem.Allocator) void {
+    const mats_a = allocator.alloc(zmath_gd.Mat, BATCH_SIZE) catch return;
+    const mats_b = allocator.alloc(zmath_gd.Mat, BATCH_SIZE) catch return;
+    const results = allocator.alloc(zmath_gd.Mat, BATCH_SIZE) catch return;
+    defer allocator.free(mats_a);
+    defer allocator.free(mats_b);
+    defer allocator.free(results);
+    
+    // Initialize data
+    for (0..BATCH_SIZE) |i| {
+        const fi = @as(f32, @floatFromInt(i));
+        mats_a[i] = zmath_gd.translation(fi * 0.01, 0, 0);
+        mats_b[i] = zmath_gd.translation(0, fi * 0.01, 0);
+    }
+    
+    for (0..BATCH_SIZE) |i| {
+        results[i] = zmath_gd.mul(mats_a[i], mats_b[i]);
+    }
+    std.mem.doNotOptimizeAway(&results[0]);
+}
