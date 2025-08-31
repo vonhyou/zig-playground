@@ -113,7 +113,10 @@ pub fn bench_quat_mul_batched_zalgebra(allocator: std.mem.Allocator) void {
     for (0..BATCH_SIZE) |i| {
         results[i] = zalgebra.Quat.mul(quats_a[i], quats_b[i]);
     }
-    std.mem.doNotOptimizeAway(&results[0]);
+    
+    // Consume all results to prevent DCE
+    const accumulator = bench_utils.accumulateQuatComponents(zalgebra.Quat, results, bench_utils.extractZalgebraQuat);
+    bench_utils.consume(f32, accumulator);
 }
 
 pub fn bench_quat_mul_batched_zm(allocator: std.mem.Allocator) void {

@@ -123,7 +123,13 @@ pub fn bench_mat4_vec4_batched_aos_zalgebra(allocator: std.mem.Allocator) void {
     for (0..BATCH_SIZE) |i| {
         results[i] = zalgebra.Mat4.mulByVec4(mats[i], vecs[i]);
     }
-    std.mem.doNotOptimizeAway(&results[0]);
+    
+    // Consume all results to prevent DCE (Vec4 treated as 4-component vector)
+    var accumulator: f32 = 0.0;
+    for (results) |result| {
+        accumulator += result.data[0] + result.data[1] + result.data[2] + result.data[3];
+    }
+    bench_utils.consume(f32, accumulator);
 }
 
 pub fn bench_mat4_vec4_batched_aos_zm(allocator: std.mem.Allocator) void {
@@ -144,7 +150,13 @@ pub fn bench_mat4_vec4_batched_aos_zm(allocator: std.mem.Allocator) void {
     for (0..BATCH_SIZE) |i| {
         results[i] = mats[i].multiplyVec4(vecs[i]);
     }
-    std.mem.doNotOptimizeAway(&results[0]);
+    
+    // Consume all results to prevent DCE (Vec4 treated as 4-component vector)
+    var accumulator: f32 = 0.0;
+    for (results) |result| {
+        accumulator += result[0] + result[1] + result[2] + result[3];
+    }
+    bench_utils.consume(f32, accumulator);
 }
 
 pub fn bench_mat4_vec4_batched_aos_zmath(allocator: std.mem.Allocator) void {

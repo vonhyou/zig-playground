@@ -501,7 +501,10 @@ pub fn bench_vec3_normalize_batched_aos_zm(allocator: std.mem.Allocator) void {
     for (0..BATCH_SIZE) |i| {
         results[i] = zm.vec.normalize(vecs[i]);
     }
-    std.mem.doNotOptimizeAway(&results[0]);
+    
+    // Consume all results to prevent DCE
+    const accumulator = bench_utils.accumulateVec3Components(zm.Vec3f, results, bench_utils.extractZmVec3);
+    bench_utils.consume(f32, accumulator);
 }
 
 pub fn bench_vec3_normalize_batched_aos_zmath(allocator: std.mem.Allocator) void {
@@ -510,16 +513,20 @@ pub fn bench_vec3_normalize_batched_aos_zmath(allocator: std.mem.Allocator) void
     defer allocator.free(vecs);
     defer allocator.free(results);
     
-    // Initialize data
+    // Initialize data with runtime values
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
-        vecs[i] = zmath_gd.f32x4(1.0 + fi * 0.001, 2.0 + fi * 0.001, 3.0 + fi * 0.001, 0.0);
+        const noise = bench_utils.randFloat(-0.001, 0.001);
+        vecs[i] = zmath_gd.f32x4(1.0 + fi * 0.001 + noise, 2.0 + fi * 0.001 + noise, 3.0 + fi * 0.001 + noise, 0.0);
     }
     
     for (0..BATCH_SIZE) |i| {
         results[i] = zmath_gd.normalize3(vecs[i]);
     }
-    std.mem.doNotOptimizeAway(&results[0]);
+    
+    // Consume all results to prevent DCE  
+    const accumulator = bench_utils.accumulateVec3Components(zmath_gd.Vec, results, bench_utils.extractZmathVec);
+    bench_utils.consume(f32, accumulator);
 }
 
 // Horizontal Reduction - Sum of Vec3 array
