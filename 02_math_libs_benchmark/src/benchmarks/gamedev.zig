@@ -13,7 +13,7 @@ pub fn bench_simd_vec_ops_zmath(allocator: std.mem.Allocator) void {
     const x_b = bench_utils.randFloat(0.3, 0.5);
     const y_b = bench_utils.randFloat(0.2, 0.4);
     const z_b = bench_utils.randFloat(0.1, 0.3);
-    
+
     const vec_a = zmath_gd.f32x4(x_a, y_a, z_a, 0.0);
     const vec_b = zmath_gd.f32x4(x_b, y_b, z_b, 0.0);
     const dot_result = zmath_gd.dot3(vec_a, vec_b);
@@ -22,7 +22,7 @@ pub fn bench_simd_vec_ops_zmath(allocator: std.mem.Allocator) void {
     const offset_val = bench_utils.randFloat(0.8, 1.2);
     const scale = zmath_gd.f32x4s(scale_val);
     const offset = zmath_gd.f32x4s(offset_val);
-    var result = dot_result * (scale * cross_result + offset);
+    const result = dot_result * (scale * cross_result + offset);
     bench_utils.consume(zmath_gd.Vec, result);
 }
 
@@ -36,7 +36,7 @@ pub fn bench_simd_mat_chain_zmath(allocator: std.mem.Allocator) void {
     const trans_y = bench_utils.randFloat(1.8, 2.2);
     const trans_z = bench_utils.randFloat(2.8, 3.2);
     const scale_val = bench_utils.randFloat(1.8, 2.2);
-    
+
     const rot_x = zmath_gd.rotationX(angle_x);
     const rot_y = zmath_gd.rotationY(angle_y);
     const rot_z = zmath_gd.rotationZ(angle_z);
@@ -45,7 +45,7 @@ pub fn bench_simd_mat_chain_zmath(allocator: std.mem.Allocator) void {
     const temp1 = zmath_gd.mul(rot_x, trans);
     const temp2 = zmath_gd.mul(rot_y, temp1);
     const temp3 = zmath_gd.mul(rot_z, temp2);
-    var result = zmath_gd.mul(scale, temp3);
+    const result = zmath_gd.mul(scale, temp3);
     bench_utils.consume(zmath_gd.Mat, result);
 }
 
@@ -96,13 +96,13 @@ pub fn bench_aos_to_soa_vec3_zalgebra(allocator: std.mem.Allocator) void {
     defer allocator.free(x_soa);
     defer allocator.free(y_soa);
     defer allocator.free(z_soa);
-    
+
     // Initialize AoS data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
         vecs_aos[i] = zalgebra.Vec3.new(fi * 0.001, fi * 0.002, fi * 0.003);
     }
-    
+
     // Convert AoS to SoA
     for (0..BATCH_SIZE) |i| {
         x_soa[i] = vecs_aos[i].data[0];
@@ -123,13 +123,13 @@ pub fn bench_aos_to_soa_vec3_zm(allocator: std.mem.Allocator) void {
     defer allocator.free(x_soa);
     defer allocator.free(y_soa);
     defer allocator.free(z_soa);
-    
+
     // Initialize AoS data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
         vecs_aos[i] = zm.Vec3f{ fi * 0.001, fi * 0.002, fi * 0.003 };
     }
-    
+
     // Convert AoS to SoA
     for (0..BATCH_SIZE) |i| {
         x_soa[i] = vecs_aos[i][0];
@@ -150,13 +150,13 @@ pub fn bench_aos_to_soa_vec3_zmath(allocator: std.mem.Allocator) void {
     defer allocator.free(x_soa);
     defer allocator.free(y_soa);
     defer allocator.free(z_soa);
-    
+
     // Initialize AoS data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
         vecs_aos[i] = zmath_gd.f32x4(fi * 0.001, fi * 0.002, fi * 0.003, 0.0);
     }
-    
+
     // Convert AoS to SoA
     for (0..BATCH_SIZE) |i| {
         x_soa[i] = vecs_aos[i][0];
@@ -178,7 +178,7 @@ pub fn bench_soa_to_aos_vec3_zalgebra(allocator: std.mem.Allocator) void {
     defer allocator.free(y_soa);
     defer allocator.free(z_soa);
     defer allocator.free(vecs_aos);
-    
+
     // Initialize SoA data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
@@ -186,7 +186,7 @@ pub fn bench_soa_to_aos_vec3_zalgebra(allocator: std.mem.Allocator) void {
         y_soa[i] = fi * 0.002;
         z_soa[i] = fi * 0.003;
     }
-    
+
     // Convert SoA to AoS
     for (0..BATCH_SIZE) |i| {
         vecs_aos[i] = zalgebra.Vec3.new(x_soa[i], y_soa[i], z_soa[i]);
@@ -203,7 +203,7 @@ pub fn bench_soa_to_aos_vec3_zm(allocator: std.mem.Allocator) void {
     defer allocator.free(y_soa);
     defer allocator.free(z_soa);
     defer allocator.free(vecs_aos);
-    
+
     // Initialize SoA data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
@@ -211,7 +211,7 @@ pub fn bench_soa_to_aos_vec3_zm(allocator: std.mem.Allocator) void {
         y_soa[i] = fi * 0.002;
         z_soa[i] = fi * 0.003;
     }
-    
+
     // Convert SoA to AoS
     for (0..BATCH_SIZE) |i| {
         vecs_aos[i] = zm.Vec3f{ x_soa[i], y_soa[i], z_soa[i] };
@@ -228,7 +228,7 @@ pub fn bench_soa_to_aos_vec3_zmath(allocator: std.mem.Allocator) void {
     defer allocator.free(y_soa);
     defer allocator.free(z_soa);
     defer allocator.free(vecs_aos);
-    
+
     // Initialize SoA data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
@@ -236,7 +236,7 @@ pub fn bench_soa_to_aos_vec3_zmath(allocator: std.mem.Allocator) void {
         y_soa[i] = fi * 0.002;
         z_soa[i] = fi * 0.003;
     }
-    
+
     // Convert SoA to AoS
     for (0..BATCH_SIZE) |i| {
         vecs_aos[i] = zmath_gd.f32x4(x_soa[i], y_soa[i], z_soa[i], 0.0);

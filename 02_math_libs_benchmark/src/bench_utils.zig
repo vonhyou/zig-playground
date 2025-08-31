@@ -8,8 +8,9 @@ var global_sink: [1024]u8 align(64) = std.mem.zeroes([1024]u8);
 pub fn blackBox(comptime T: type, value: T) T {
     // Use volatile operations to prevent constant folding
     var temp = value;
-    @volatileStore(T, @ptrCast(&global_sink[0]), temp);
-    temp = @volatileLoad(T, @ptrCast(&global_sink[0]));
+    const ptr: *volatile T = @ptrCast(&global_sink[0]);
+    ptr.* = temp;
+    temp = ptr.*;
     return temp;
 }
 
@@ -17,21 +18,22 @@ pub fn blackBox(comptime T: type, value: T) T {
 /// This creates a visible side effect that the optimizer must preserve
 pub fn consume(comptime T: type, value: T) void {
     // Write to a volatile sink to ensure the workload is executed
-    var bytes: [@sizeOf(T)]u8 = @bitCast(value);
+    const bytes = std.mem.asBytes(&value);
     for (bytes, 0..) |byte, i| {
-        @volatileStore(u8, &global_sink[i % global_sink.len], byte);
+        const ptr: *volatile u8 = &global_sink[i % @sizeOf(@TypeOf(global_sink))];
+        ptr.* = byte;
     }
 }
 
 /// Global RNG for runtime data generation
-var rng_state: std.rand.DefaultPrng = undefined;
+var rng_state: std.Random.DefaultPrng = undefined;
 var rng_initialized: bool = false;
 
 /// Initialize RNG with runtime seed to prevent compile-time constant folding
 pub fn initRng() void {
     if (!rng_initialized) {
         const seed = @as(u64, @intCast(std.time.milliTimestamp()));
-        rng_state = std.rand.DefaultPrng.init(seed);
+        rng_state = std.Random.DefaultPrng.init(seed);
         rng_initialized = true;
     }
 }
@@ -70,7 +72,7 @@ pub fn accumulateF32(slice: []const f32) f32 {
 }
 
 /// Compute vector component sum for Vec3-like structures
-pub fn accumulateVec3Components(comptime T: type, slice: []const T, comptime accessor: fn(T) [3]f32) f32 {
+pub fn accumulateVec3Components(comptime T: type, slice: []const T, comptime accessor: fn (T) [3]f32) f32 {
     var sum: f32 = 0.0;
     for (slice) |item| {
         const components = accessor(item);
@@ -79,8 +81,17 @@ pub fn accumulateVec3Components(comptime T: type, slice: []const T, comptime acc
     return blackBox(f32, sum);
 }
 
-/// Compute matrix component sum for Mat4-like structures  
-pub fn accumulateMat4Components(comptime T: type, slice: []const T, comptime accessor: fn(T) [16]f32) f32 {
+pub fn accumulateVec4Components(comptime T: type, slice: []const T, comptime accessor: fn (T) [4]f32) f32 {
+    var sum: f32 = 0.0;
+    for (slice) |item| {
+        const components = accessor(item);
+        sum += components[0] + components[1] + components[2] + components[3];
+    }
+    return blackBox(f32, sum);
+}
+
+/// Compute matrix component sum for Mat4-like structures
+pub fn accumulateMat4Components(comptime T: type, slice: []const T, comptime accessor: fn (T) [16]f32) f32 {
     var sum: f32 = 0.0;
     for (slice) |item| {
         const components = accessor(item);
@@ -92,7 +103,7 @@ pub fn accumulateMat4Components(comptime T: type, slice: []const T, comptime acc
 }
 
 /// Compute quaternion component sum for Quat-like structures
-pub fn accumulateQuatComponents(comptime T: type, slice: []const T, comptime accessor: fn(T) [4]f32) f32 {
+pub fn accumulateQuatComponents(comptime T: type, slice: []const T, comptime accessor: fn (T) [4]f32) f32 {
     var sum: f32 = 0.0;
     for (slice) |item| {
         const components = accessor(item);
@@ -106,7 +117,7 @@ pub fn runtimeVec3(comptime Vec3Type: type, base_x: f32, base_y: f32, base_z: f3
     const x = randFloat(base_x - 0.1, base_x + 0.1);
     const y = randFloat(base_y - 0.1, base_y + 0.1);
     const z = randFloat(base_z - 0.1, base_z + 0.1);
-    
+
     // Handle different Vec3 creation methods
     const type_info = @typeInfo(Vec3Type);
     if (type_info == .Struct) {
@@ -116,7 +127,7 @@ pub fn runtimeVec3(comptime Vec3Type: type, base_x: f32, base_y: f32, base_z: f3
             // Assume xyz order for struct with 3 fields
             return Vec3Type{
                 @field(@as(f32, x), fields[0].name),
-                @field(@as(f32, y), fields[1].name), 
+                @field(@as(f32, y), fields[1].name),
                 @field(@as(f32, z), fields[2].name),
             };
         } else if (fields.len == 4) {
@@ -139,7 +150,7 @@ pub fn runtimeVec3(comptime Vec3Type: type, base_x: f32, base_y: f32, base_z: f3
         }
         return result;
     }
-    
+
     // Fallback - this should be specialized per library
     @compileError("Unsupported Vec3Type: " ++ @typeName(Vec3Type));
 }

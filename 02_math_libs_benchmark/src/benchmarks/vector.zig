@@ -13,10 +13,10 @@ pub fn bench_vec_mul_zalgebra(allocator: std.mem.Allocator) void {
     const x_b = bench_utils.randFloat(0.3, 0.5);
     const y_b = bench_utils.randFloat(0.2, 0.4);
     const z_b = bench_utils.randFloat(0.1, 0.3);
-    
+
     const vec3_za_a = zalgebra.Vec3.new(x_a, y_a, z_a);
     const vec3_za_b = zalgebra.Vec3.new(x_b, y_b, z_b);
-    var result = zalgebra.Vec3.mul(vec3_za_a, vec3_za_b);
+    const result = zalgebra.Vec3.mul(vec3_za_a, vec3_za_b);
     bench_utils.consume(zalgebra.Vec3, result);
 }
 
@@ -28,10 +28,10 @@ pub fn bench_vec_mul_zm(allocator: std.mem.Allocator) void {
     const x_b = bench_utils.randFloat(0.3, 0.5);
     const y_b = bench_utils.randFloat(0.2, 0.4);
     const z_b = bench_utils.randFloat(0.1, 0.3);
-    
+
     const vec3_zm_a = zm.Vec3f{ x_a, y_a, z_a };
     const vec3_zm_b = zm.Vec3f{ x_b, y_b, z_b };
-    var result = vec3_zm_a * vec3_zm_b;
+    const result = vec3_zm_a * vec3_zm_b;
     bench_utils.consume(zm.Vec3f, result);
 }
 
@@ -43,10 +43,10 @@ pub fn bench_vec_mul_zmath(allocator: std.mem.Allocator) void {
     const x_b = bench_utils.randFloat(0.3, 0.5);
     const y_b = bench_utils.randFloat(0.2, 0.4);
     const z_b = bench_utils.randFloat(0.1, 0.3);
-    
+
     const vec3_za_a = zmath_gd.f32x4(x_a, y_a, z_a, 0.0);
     const vec3_za_b = zmath_gd.f32x4(x_b, y_b, z_b, 0.0);
-    var result = vec3_za_a * vec3_za_b;
+    const result = vec3_za_a * vec3_za_b;
     bench_utils.consume(zmath_gd.Vec, result);
 }
 
@@ -59,10 +59,10 @@ pub fn bench_vec_dot_zalgebra(allocator: std.mem.Allocator) void {
     const x_b = bench_utils.randFloat(0.3, 0.5);
     const y_b = bench_utils.randFloat(0.2, 0.4);
     const z_b = bench_utils.randFloat(0.1, 0.3);
-    
+
     const vec3_za_a = zalgebra.Vec3.new(x_a, y_a, z_a);
     const vec3_za_b = zalgebra.Vec3.new(x_b, y_b, z_b);
-    var result = zalgebra.Vec3.dot(vec3_za_a, vec3_za_b);
+    const result = zalgebra.Vec3.dot(vec3_za_a, vec3_za_b);
     bench_utils.consume(f32, result);
 }
 
@@ -74,10 +74,10 @@ pub fn bench_vec_dot_zm(allocator: std.mem.Allocator) void {
     const x_b = bench_utils.randFloat(0.3, 0.5);
     const y_b = bench_utils.randFloat(0.2, 0.4);
     const z_b = bench_utils.randFloat(0.1, 0.3);
-    
+
     const vec3_zm_a = zm.Vec3f{ x_a, y_a, z_a };
     const vec3_zm_b = zm.Vec3f{ x_b, y_b, z_b };
-    var result = zm.vec.dot(vec3_zm_a, vec3_zm_b);
+    const result = zm.vec.dot(vec3_zm_a, vec3_zm_b);
     bench_utils.consume(f32, result);
 }
 
@@ -89,11 +89,11 @@ pub fn bench_vec_dot_zmath(allocator: std.mem.Allocator) void {
     const x_b = bench_utils.randFloat(0.3, 0.5);
     const y_b = bench_utils.randFloat(0.2, 0.4);
     const z_b = bench_utils.randFloat(0.1, 0.3);
-    
+
     const vec3_za_a = zmath_gd.f32x4(x_a, y_a, z_a, 0.0);
     const vec3_za_b = zmath_gd.f32x4(x_b, y_b, z_b, 0.0);
     const dot_result = zmath_gd.dot3(vec3_za_a, vec3_za_b);
-    var result = dot_result[0];
+    const result = dot_result[0];
     bench_utils.consume(f32, result);
 }
 
@@ -232,14 +232,14 @@ pub fn bench_vec3_dot_batched_aos_zalgebra(allocator: std.mem.Allocator) void {
     const vecs_b = allocator.alloc(zalgebra.Vec3, BATCH_SIZE) catch return;
     defer allocator.free(vecs_a);
     defer allocator.free(vecs_b);
-    
+
     // Initialize data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
         vecs_a[i] = zalgebra.Vec3.new(0.1 + fi * 0.001, 0.2 + fi * 0.001, 0.3 + fi * 0.001);
         vecs_b[i] = zalgebra.Vec3.new(0.4 + fi * 0.001, 0.5 + fi * 0.001, 0.6 + fi * 0.001);
     }
-    
+
     var sum: f32 = 0.0;
     for (0..BATCH_SIZE) |i| {
         sum += zalgebra.Vec3.dot(vecs_a[i], vecs_b[i]);
@@ -252,14 +252,14 @@ pub fn bench_vec3_dot_batched_aos_zm(allocator: std.mem.Allocator) void {
     const vecs_b = allocator.alloc(zm.Vec3f, BATCH_SIZE) catch return;
     defer allocator.free(vecs_a);
     defer allocator.free(vecs_b);
-    
+
     // Initialize data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
         vecs_a[i] = zm.Vec3f{ 0.1 + fi * 0.001, 0.2 + fi * 0.001, 0.3 + fi * 0.001 };
         vecs_b[i] = zm.Vec3f{ 0.4 + fi * 0.001, 0.5 + fi * 0.001, 0.6 + fi * 0.001 };
     }
-    
+
     var sum: f32 = 0.0;
     for (0..BATCH_SIZE) |i| {
         sum += zm.vec.dot(vecs_a[i], vecs_b[i]);
@@ -272,14 +272,14 @@ pub fn bench_vec3_dot_batched_aos_zmath(allocator: std.mem.Allocator) void {
     const vecs_b = allocator.alloc(zmath_gd.Vec, BATCH_SIZE) catch return;
     defer allocator.free(vecs_a);
     defer allocator.free(vecs_b);
-    
+
     // Initialize data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
         vecs_a[i] = zmath_gd.f32x4(0.1 + fi * 0.001, 0.2 + fi * 0.001, 0.3 + fi * 0.001, 0.0);
         vecs_b[i] = zmath_gd.f32x4(0.4 + fi * 0.001, 0.5 + fi * 0.001, 0.6 + fi * 0.001, 0.0);
     }
-    
+
     var sum: f32 = 0.0;
     for (0..BATCH_SIZE) |i| {
         const dot_result = zmath_gd.dot3(vecs_a[i], vecs_b[i]);
@@ -302,7 +302,7 @@ pub fn bench_vec3_dot_batched_soa_zalgebra(allocator: std.mem.Allocator) void {
     defer allocator.free(x_b);
     defer allocator.free(y_b);
     defer allocator.free(z_b);
-    
+
     // Initialize data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
@@ -313,7 +313,7 @@ pub fn bench_vec3_dot_batched_soa_zalgebra(allocator: std.mem.Allocator) void {
         y_b[i] = 0.5 + fi * 0.001;
         z_b[i] = 0.6 + fi * 0.001;
     }
-    
+
     var sum: f32 = 0.0;
     for (0..BATCH_SIZE) |i| {
         sum += x_a[i] * x_b[i] + y_a[i] * y_b[i] + z_a[i] * z_b[i];
@@ -334,7 +334,7 @@ pub fn bench_vec3_dot_batched_soa_zm(allocator: std.mem.Allocator) void {
     defer allocator.free(x_b);
     defer allocator.free(y_b);
     defer allocator.free(z_b);
-    
+
     // Initialize data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
@@ -345,7 +345,7 @@ pub fn bench_vec3_dot_batched_soa_zm(allocator: std.mem.Allocator) void {
         y_b[i] = 0.5 + fi * 0.001;
         z_b[i] = 0.6 + fi * 0.001;
     }
-    
+
     var sum: f32 = 0.0;
     for (0..BATCH_SIZE) |i| {
         sum += x_a[i] * x_b[i] + y_a[i] * y_b[i] + z_a[i] * z_b[i];
@@ -366,7 +366,7 @@ pub fn bench_vec3_dot_batched_soa_zmath(allocator: std.mem.Allocator) void {
     defer allocator.free(x_b);
     defer allocator.free(y_b);
     defer allocator.free(z_b);
-    
+
     // Initialize data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
@@ -377,7 +377,7 @@ pub fn bench_vec3_dot_batched_soa_zmath(allocator: std.mem.Allocator) void {
         y_b[i] = 0.5 + fi * 0.001;
         z_b[i] = 0.6 + fi * 0.001;
     }
-    
+
     var sum: f32 = 0.0;
     for (0..BATCH_SIZE) |i| {
         sum += x_a[i] * x_b[i] + y_a[i] * y_b[i] + z_a[i] * z_b[i];
@@ -393,7 +393,7 @@ pub fn bench_vec3_cross_batched_aos_zalgebra(allocator: std.mem.Allocator) void 
     defer allocator.free(vecs_a);
     defer allocator.free(vecs_b);
     defer allocator.free(results);
-    
+
     // Initialize data with runtime values
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
@@ -402,13 +402,13 @@ pub fn bench_vec3_cross_batched_aos_zalgebra(allocator: std.mem.Allocator) void 
         vecs_a[i] = zalgebra.Vec3.new(0.1 + fi * 0.001 + noise_a, 0.2 + fi * 0.001 + noise_a, 0.3 + fi * 0.001 + noise_a);
         vecs_b[i] = zalgebra.Vec3.new(0.4 + fi * 0.001 + noise_b, 0.5 + fi * 0.001 + noise_b, 0.6 + fi * 0.001 + noise_b);
     }
-    
+
     for (0..BATCH_SIZE) |i| {
         results[i] = zalgebra.Vec3.cross(vecs_a[i], vecs_b[i]);
     }
-    
+
     // Consume all results to prevent DCE
-    const accumulator = bench_utils.accumulateVec3Components(zalgebra.Vec3, results, bench_utils.extractZalgebraVec3);
+    const accumulator = bench_utils.accumulateVec3Components(zalgebra.Vec3, results, extractZalgebraVec3Wrapper);
     bench_utils.consume(f32, accumulator);
 }
 
@@ -419,7 +419,7 @@ pub fn bench_vec3_cross_batched_aos_zm(allocator: std.mem.Allocator) void {
     defer allocator.free(vecs_a);
     defer allocator.free(vecs_b);
     defer allocator.free(results);
-    
+
     // Initialize data with runtime values
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
@@ -428,13 +428,13 @@ pub fn bench_vec3_cross_batched_aos_zm(allocator: std.mem.Allocator) void {
         vecs_a[i] = zm.Vec3f{ 0.1 + fi * 0.001 + noise_a, 0.2 + fi * 0.001 + noise_a, 0.3 + fi * 0.001 + noise_a };
         vecs_b[i] = zm.Vec3f{ 0.4 + fi * 0.001 + noise_b, 0.5 + fi * 0.001 + noise_b, 0.6 + fi * 0.001 + noise_b };
     }
-    
+
     for (0..BATCH_SIZE) |i| {
         results[i] = zm.vec.cross(vecs_a[i], vecs_b[i]);
     }
-    
+
     // Consume all results to prevent DCE
-    const accumulator = bench_utils.accumulateVec3Components(zm.Vec3f, results, bench_utils.extractZmVec3);
+    const accumulator = bench_utils.accumulateVec3Components(zm.Vec3f, results, extractZmVec3Wrapper);
     bench_utils.consume(f32, accumulator);
 }
 
@@ -445,7 +445,7 @@ pub fn bench_vec3_cross_batched_aos_zmath(allocator: std.mem.Allocator) void {
     defer allocator.free(vecs_a);
     defer allocator.free(vecs_b);
     defer allocator.free(results);
-    
+
     // Initialize data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
@@ -453,13 +453,13 @@ pub fn bench_vec3_cross_batched_aos_zmath(allocator: std.mem.Allocator) void {
         vecs_a[i] = zmath_gd.f32x4(0.1 + fi * 0.001 + noise, 0.2 + fi * 0.001 + noise, 0.3 + fi * 0.001 + noise, 0.0);
         vecs_b[i] = zmath_gd.f32x4(0.4 + fi * 0.001 + noise, 0.5 + fi * 0.001 + noise, 0.6 + fi * 0.001 + noise, 0.0);
     }
-    
+
     for (0..BATCH_SIZE) |i| {
         results[i] = zmath_gd.cross3(vecs_a[i], vecs_b[i]);
     }
-    
+
     // Consume all results to prevent DCE
-    const accumulator = bench_utils.accumulateVec3Components(zmath_gd.Vec, results, bench_utils.extractZmathVec);
+    const accumulator = bench_utils.accumulateVec4Components(zmath_gd.Vec, results, extractZmathVecWrapper);
     bench_utils.consume(f32, accumulator);
 }
 
@@ -469,20 +469,20 @@ pub fn bench_vec3_normalize_batched_aos_zalgebra(allocator: std.mem.Allocator) v
     const results = allocator.alloc(zalgebra.Vec3, BATCH_SIZE) catch return;
     defer allocator.free(vecs);
     defer allocator.free(results);
-    
+
     // Initialize data with runtime values
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
         const noise = bench_utils.randFloat(-0.001, 0.001);
         vecs[i] = zalgebra.Vec3.new(1.0 + fi * 0.001 + noise, 2.0 + fi * 0.001 + noise, 3.0 + fi * 0.001 + noise);
     }
-    
+
     for (0..BATCH_SIZE) |i| {
         results[i] = zalgebra.Vec3.norm(vecs[i]);
     }
-    
+
     // Consume all results to prevent DCE
-    const accumulator = bench_utils.accumulateVec3Components(zalgebra.Vec3, results, bench_utils.extractZalgebraVec3);
+    const accumulator = bench_utils.accumulateVec3Components(zalgebra.Vec3, results, extractZalgebraVec3Wrapper);
     bench_utils.consume(f32, accumulator);
 }
 
@@ -491,19 +491,19 @@ pub fn bench_vec3_normalize_batched_aos_zm(allocator: std.mem.Allocator) void {
     const results = allocator.alloc(zm.Vec3f, BATCH_SIZE) catch return;
     defer allocator.free(vecs);
     defer allocator.free(results);
-    
+
     // Initialize data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
         vecs[i] = zm.Vec3f{ 1.0 + fi * 0.001, 2.0 + fi * 0.001, 3.0 + fi * 0.001 };
     }
-    
+
     for (0..BATCH_SIZE) |i| {
         results[i] = zm.vec.normalize(vecs[i]);
     }
-    
+
     // Consume all results to prevent DCE
-    const accumulator = bench_utils.accumulateVec3Components(zm.Vec3f, results, bench_utils.extractZmVec3);
+    const accumulator = bench_utils.accumulateVec3Components(zm.Vec3f, results, extractZmVec3Wrapper);
     bench_utils.consume(f32, accumulator);
 }
 
@@ -512,20 +512,20 @@ pub fn bench_vec3_normalize_batched_aos_zmath(allocator: std.mem.Allocator) void
     const results = allocator.alloc(zmath_gd.Vec, BATCH_SIZE) catch return;
     defer allocator.free(vecs);
     defer allocator.free(results);
-    
+
     // Initialize data with runtime values
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
         const noise = bench_utils.randFloat(-0.001, 0.001);
         vecs[i] = zmath_gd.f32x4(1.0 + fi * 0.001 + noise, 2.0 + fi * 0.001 + noise, 3.0 + fi * 0.001 + noise, 0.0);
     }
-    
+
     for (0..BATCH_SIZE) |i| {
         results[i] = zmath_gd.normalize3(vecs[i]);
     }
-    
-    // Consume all results to prevent DCE  
-    const accumulator = bench_utils.accumulateVec3Components(zmath_gd.Vec, results, bench_utils.extractZmathVec);
+
+    // Consume all results to prevent DCE
+    const accumulator = bench_utils.accumulateVec4Components(zmath_gd.Vec, results, extractZmathVecWrapper);
     bench_utils.consume(f32, accumulator);
 }
 
@@ -533,13 +533,13 @@ pub fn bench_vec3_normalize_batched_aos_zmath(allocator: std.mem.Allocator) void
 pub fn bench_vec3_sum_reduction_zalgebra(allocator: std.mem.Allocator) void {
     const vecs = allocator.alloc(zalgebra.Vec3, BATCH_SIZE) catch return;
     defer allocator.free(vecs);
-    
+
     // Initialize data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
         vecs[i] = zalgebra.Vec3.new(fi * 0.001, fi * 0.001, fi * 0.001);
     }
-    
+
     var sum = zalgebra.Vec3.new(0, 0, 0);
     for (0..BATCH_SIZE) |i| {
         sum = zalgebra.Vec3.add(sum, vecs[i]);
@@ -550,13 +550,13 @@ pub fn bench_vec3_sum_reduction_zalgebra(allocator: std.mem.Allocator) void {
 pub fn bench_vec3_sum_reduction_zm(allocator: std.mem.Allocator) void {
     const vecs = allocator.alloc(zm.Vec3f, BATCH_SIZE) catch return;
     defer allocator.free(vecs);
-    
+
     // Initialize data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
         vecs[i] = zm.Vec3f{ fi * 0.001, fi * 0.001, fi * 0.001 };
     }
-    
+
     var sum = zm.Vec3f{ 0, 0, 0 };
     for (0..BATCH_SIZE) |i| {
         sum = sum + vecs[i];
@@ -567,13 +567,13 @@ pub fn bench_vec3_sum_reduction_zm(allocator: std.mem.Allocator) void {
 pub fn bench_vec3_sum_reduction_zmath(allocator: std.mem.Allocator) void {
     const vecs = allocator.alloc(zmath_gd.Vec, BATCH_SIZE) catch return;
     defer allocator.free(vecs);
-    
+
     // Initialize data
     for (0..BATCH_SIZE) |i| {
         const fi = @as(f32, @floatFromInt(i));
         vecs[i] = zmath_gd.f32x4(fi * 0.001, fi * 0.001, fi * 0.001, 0.0);
     }
-    
+
     var sum = zmath_gd.f32x4(0, 0, 0, 0);
     for (0..BATCH_SIZE) |i| {
         sum = sum + vecs[i];
@@ -599,7 +599,7 @@ pub fn bench_vec3_dot_simd_soa_zmath_optimized(allocator: std.mem.Allocator) voi
     const vecs_b_y = allocator.alloc(zmath_gd.Vec, num_groups) catch return;
     const vecs_b_z = allocator.alloc(zmath_gd.Vec, num_groups) catch return;
     const results = allocator.alloc(zmath_gd.Vec, num_groups) catch return;
-    
+
     defer allocator.free(vecs_a_x);
     defer allocator.free(vecs_a_y);
     defer allocator.free(vecs_a_z);
@@ -607,17 +607,17 @@ pub fn bench_vec3_dot_simd_soa_zmath_optimized(allocator: std.mem.Allocator) voi
     defer allocator.free(vecs_b_y);
     defer allocator.free(vecs_b_z);
     defer allocator.free(results);
-    
+
     // Initialize data with runtime values
     for (0..num_groups) |i| {
-        bench_utils.fillArrayF32(@ptrCast(vecs_a_x[i..i+1]), 0.1, 0.001);
-        bench_utils.fillArrayF32(@ptrCast(vecs_a_y[i..i+1]), 0.2, 0.001);
-        bench_utils.fillArrayF32(@ptrCast(vecs_a_z[i..i+1]), 0.3, 0.001);
-        bench_utils.fillArrayF32(@ptrCast(vecs_b_x[i..i+1]), 0.4, 0.001);
-        bench_utils.fillArrayF32(@ptrCast(vecs_b_y[i..i+1]), 0.5, 0.001);
-        bench_utils.fillArrayF32(@ptrCast(vecs_b_z[i..i+1]), 0.6, 0.001);
+        bench_utils.fillArrayF32(@ptrCast(vecs_a_x[i .. i + 1]), 0.1, 0.001);
+        bench_utils.fillArrayF32(@ptrCast(vecs_a_y[i .. i + 1]), 0.2, 0.001);
+        bench_utils.fillArrayF32(@ptrCast(vecs_a_z[i .. i + 1]), 0.3, 0.001);
+        bench_utils.fillArrayF32(@ptrCast(vecs_b_x[i .. i + 1]), 0.4, 0.001);
+        bench_utils.fillArrayF32(@ptrCast(vecs_b_y[i .. i + 1]), 0.5, 0.001);
+        bench_utils.fillArrayF32(@ptrCast(vecs_b_z[i .. i + 1]), 0.6, 0.001);
     }
-    
+
     // Compute dot products: dot(A, B) = A.x * B.x + A.y * B.y + A.z * B.z
     for (0..num_groups) |i| {
         const dot_x = vecs_a_x[i] * vecs_b_x[i];
@@ -625,7 +625,7 @@ pub fn bench_vec3_dot_simd_soa_zmath_optimized(allocator: std.mem.Allocator) voi
         const dot_z = vecs_a_z[i] * vecs_b_z[i];
         results[i] = dot_x + dot_y + dot_z;
     }
-    
+
     // Consume all results to prevent DCE
     const accumulator = bench_utils.accumulateF32(@ptrCast(results));
     bench_utils.consume(f32, accumulator);
@@ -640,21 +640,21 @@ pub fn bench_vec3_normalize_simd_soa_zmath_optimized(allocator: std.mem.Allocato
     const results_x = allocator.alloc(zmath_gd.Vec, num_groups) catch return;
     const results_y = allocator.alloc(zmath_gd.Vec, num_groups) catch return;
     const results_z = allocator.alloc(zmath_gd.Vec, num_groups) catch return;
-    
+
     defer allocator.free(vecs_x);
     defer allocator.free(vecs_y);
     defer allocator.free(vecs_z);
     defer allocator.free(results_x);
     defer allocator.free(results_y);
     defer allocator.free(results_z);
-    
+
     // Initialize data with runtime values
     for (0..num_groups) |i| {
-        bench_utils.fillArrayF32(@ptrCast(vecs_x[i..i+1]), 1.0, 0.001);
-        bench_utils.fillArrayF32(@ptrCast(vecs_y[i..i+1]), 2.0, 0.001);
-        bench_utils.fillArrayF32(@ptrCast(vecs_z[i..i+1]), 3.0, 0.001);
+        bench_utils.fillArrayF32(@ptrCast(vecs_x[i .. i + 1]), 1.0, 0.001);
+        bench_utils.fillArrayF32(@ptrCast(vecs_y[i .. i + 1]), 2.0, 0.001);
+        bench_utils.fillArrayF32(@ptrCast(vecs_z[i .. i + 1]), 3.0, 0.001);
     }
-    
+
     // Normalize vectors: v_norm = v / ||v||
     for (0..num_groups) |i| {
         const len_sq = vecs_x[i] * vecs_x[i] + vecs_y[i] * vecs_y[i] + vecs_z[i] * vecs_z[i];
@@ -663,11 +663,23 @@ pub fn bench_vec3_normalize_simd_soa_zmath_optimized(allocator: std.mem.Allocato
         results_y[i] = vecs_y[i] * inv_len;
         results_z[i] = vecs_z[i] * inv_len;
     }
-    
+
     // Consume all results to prevent DCE
     const acc_x = bench_utils.accumulateF32(@ptrCast(results_x));
     const acc_y = bench_utils.accumulateF32(@ptrCast(results_y));
     const acc_z = bench_utils.accumulateF32(@ptrCast(results_z));
     const total_accumulator = acc_x + acc_y + acc_z;
     bench_utils.consume(f32, total_accumulator);
+}
+
+fn extractZalgebraVec3Wrapper(v: zalgebra.Vec3) [3]f32 {
+    return bench_utils.extractZalgebraVec3(v);
+}
+
+fn extractZmVec3Wrapper(v: zm.Vec3f) [3]f32 {
+    return bench_utils.extractZmVec3(v);
+}
+
+fn extractZmathVecWrapper(v: zmath_gd.Vec) [4]f32 {
+    return bench_utils.extractZmathVec(v);
 }
