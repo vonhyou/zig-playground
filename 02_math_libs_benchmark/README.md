@@ -32,8 +32,10 @@ zig build run -- help
 For optimized benchmarks, use:
 ```bash
 zig build run -Doptimize=ReleaseFast
-zig build run -Doptimize=ReleaseFast -Dcpu=native
+zig build run -Doptimize=ReleaseFast -Dcpu_native=true  # Enable native CPU optimizations
 ```
+
+**Note**: The `-Dcpu_native=true` option enables native CPU feature detection and SIMD optimizations. Use this for maximum performance evaluation on your specific hardware, but keep in mind results may not be portable across different systems.
 
 ## Supported libraries
 
@@ -43,19 +45,23 @@ zig build run -Doptimize=ReleaseFast -Dcpu=native
 
 ## Current benchmark cases
 
-### Vector Operations (33 benchmarks)
-- **Vec3 multiplication** (component-wise) - zalgebra, zm, zmath
-- **Vec3 dot product** - zalgebra, zm, zmath  
+### Vector Operations (35 benchmarks)
+- **Vec3 multiplication** (component-wise) - zalgebra, zm, zmath *(hardened)*
+- **Vec3 dot product** - zalgebra, zm, zmath *(hardened)*
 - **Vec3 cross product** - zalgebra, zm, zmath
 - **Vec3 length/magnitude** - zalgebra, zm, zmath
 - **Vec3 normalization** - zalgebra, zm, zmath
 - **Vec3 linear interpolation (lerp)** - zalgebra, zm, zmath
 - **Vec3 distance** - zalgebra, zm, zmath
-- **Vec3 dot product batched (AoS layout)** - zalgebra, zm, zmath
+- **Vec3 dot product batched (AoS layout)** - zalgebra, zm, zmath *(hardened)*
 - **Vec3 dot product batched (SoA layout)** - zalgebra, zm, zmath
-- **Vec3 cross product batched (AoS layout)** - zalgebra, zm, zmath
-- **Vec3 normalization batched (AoS layout)** - zalgebra, zm, zmath
+- **Vec3 cross product batched (AoS layout)** - zalgebra, zm, zmath *(hardened)*
+- **Vec3 normalization batched (AoS layout)** - zalgebra, zm, zmath *(partially hardened)*
 - **Vec3 sum reduction** (horizontal reduction on arrays) - zalgebra, zm, zmath
+- **🆕 Vec3 dot SIMD SoA optimized** - zmath native f32x4 lanes, 1024 element batches
+- **🆕 Vec3 normalize SIMD SoA optimized** - zmath native batch processing
+
+*(hardened) = fixed against constant folding and DCE*
 
 ### Matrix Operations (15 benchmarks)
 - **Mat4×Mat4 multiplication** - zalgebra, zm, zmath
@@ -73,10 +79,34 @@ zig build run -Doptimize=ReleaseFast -Dcpu=native
 
 ### GameDev Operations (11 benchmarks)
 - **Look At matrix generation** - zalgebra (placeholder), zm, zmath
-- **SIMD vector operations** (combined dot/cross/scale) - zmath only
-- **SIMD matrix chain operations** (rotation/translation/scale chains) - zmath only
+- **SIMD vector operations** (combined dot/cross/scale) - zmath only *(hardened)*
+- **SIMD matrix chain operations** (rotation/translation/scale chains) - zmath only *(hardened)*
 - **AoS→SoA Vec3 conversion** (memory layout transformation) - zalgebra, zm, zmath
 - **SoA→AoS Vec3 conversion** (memory layout transformation) - zalgebra, zm, zmath
+
+*(hardened) = fixed against constant folding and DCE*
+
+## Key Improvements Made
+
+### 🔧 **Anti-Optimization Hardening**
+- **Constant Folding Prevention**: Replaced hardcoded values (e.g., `0.2, 0.3, 0.4`) with runtime-generated values using seeded RNG
+- **Dead Code Elimination Prevention**: Replaced `results[0]` consumption with full result accumulation across entire batches
+- **Volatile Operations**: `blackBox()` and `consume()` functions use `@volatileLoad`/`@volatileStore` to prevent compiler optimizations
+
+### ⚡ **Enhanced SIMD/SoA Variants**  
+- **Native zmath SoA**: New optimized variants use f32x4 lanes to process 4 Vec3s simultaneously
+- **Batch Processing**: 1024-element batches for improved SIMD utilization
+- **Memory Layout Optimization**: Separate X, Y, Z component arrays for optimal cache usage
+
+### 🎯 **API Usage Corrections**
+- **Matrix Operations**: Fixed zmath to use proper matrix construction instead of hardcoded arrays
+- **Quaternion Operations**: Corrected axis-angle construction and multiplication APIs
+- **Library Consistency**: Aligned operations to use each library's intended APIs
+
+### 🚀 **CPU-Native Support**
+- **Build Option**: `-Dcpu_native=true` enables native CPU feature detection
+- **SIMD Optimization**: Allows libraries to use AVX, SSE, and other CPU-specific instructions
+- **Portability**: Default build remains portable, native optimization is opt-in
 
 ## Proposed SIMD benches to add next
 
@@ -93,9 +123,28 @@ zig build run -Doptimize=ReleaseFast -Dcpu=native
 ## Methodology
 
 The benchmark methodology includes:
+- **Anti-optimization measures**: `blackBox()` and `consume()` functions prevent constant folding and dead code elimination
+- **Runtime data generation**: All inputs are generated at runtime using seeded RNG to prevent compile-time precomputation
+- **Full workload consumption**: Batched operations aggregate all results via scalar accumulation to ensure complete execution
 - Warmup runs with initial results discarded
 - Multiple sample measurements for statistical accuracy
 - Kernel-only timing (excluding setup/teardown overhead)
 - Single sample validation to ensure correctness
 - Optimized build flags (ReleaseFast, optional -Dcpu=native)
 - Memory allocation tracking via zbench framework
+
+## Benchmark Naming Convention
+
+Due to zbench's 22-character display limit, benchmark names use abbreviated identifiers:
+
+**Library Abbreviations:**
+- `za` = zalgebra
+- `zm` = zm
+- `zmath` = zmath
+
+**Examples:**
+- `V3DotBatchAoS:za` = Vec3 Dot Batch AoS: zalgebra
+- `M4V4BatchAoS:zmath` = Mat4×Vec4 Batch AoS: zmath
+- `QuatMulBatch:zm` = Quat Mul Batch: zm
+
+This ensures all benchmark results are clearly identifiable without truncation ambiguity.

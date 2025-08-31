@@ -3,16 +3,26 @@ const std = @import("std");
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
+    
+    // Add cpu_native option
+    const cpu_native = b.option(bool, "cpu_native", "Enable native CPU optimizations") orelse false;
+    
+    // Modify target if cpu_native is enabled
+    const actual_target = if (cpu_native) 
+        b.resolveTargetQuery(.{ .cpu_arch = target.result.cpu.arch, .cpu_model = .native })
+    else 
+        target;
+    
     const mod = b.addModule("_02_math_libs_benchmark", .{
         .root_source_file = b.path("src/root.zig"),
-        .target = target,
+        .target = actual_target,
     });
 
     const exe = b.addExecutable(.{
         .name = "_02_math_libs_benchmark",
         .root_module = b.createModule(.{
             .root_source_file = b.path("src/main.zig"),
-            .target = target,
+            .target = actual_target,
             .optimize = optimize,
             .imports = &.{
                 .{ .name = "_02_math_libs_benchmark", .module = mod },
@@ -20,7 +30,7 @@ pub fn build(b: *std.Build) void {
         }),
     });
 
-    const opts = .{ .target = target, .optimize = optimize };
+    const opts = .{ .target = actual_target, .optimize = optimize };
 
     const zalgebra = b.dependency("zalgebra", opts);
     exe.root_module.addImport("zalgebra", zalgebra.module("zalgebra"));
