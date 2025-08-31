@@ -1,5 +1,5 @@
 const std = @import("std");
-const libraries = @import("benchmarks/libraries/mod.zig");
+const libraries = @import("libraries/mod.zig");
 
 // Generic matrix multiply bench; returns a function pointer for zbench
 pub fn bench_mat_mul(comptime lib: libraries.Library, comptime is_simd: bool) fn (std.mem.Allocator) void {
