@@ -6,6 +6,8 @@ const vector = @import("benchmarks/vector.zig");
 const matrix = @import("benchmarks/matrix.zig");
 const quaternion = @import("benchmarks/quaternion.zig");
 const zmath = @import("benchmarks/zmath.zig");
+const vector_generic = @import("benchmarks/vector_generic.zig");
+const matrix_generic = @import("benchmarks/matrix_generic.zig");
 
 const BenchmarkCategory = enum {
     vec,
@@ -42,6 +44,9 @@ const BENCHMARKS = [_]BenchmarkInfo{
     .{ .name = "zalgebra vec distance", .func = vector.bench_zalgebra_vec_distance, .category = .vec },
     .{ .name = "zm vec distance", .func = vector.bench_zm_vec_distance, .category = .vec },
     .{ .name = "zmath vec distance", .func = zmath.bench_zmath_vec_distance, .category = .vec },
+    .{ .name = "Vector Distance (zalgebra)", .func = vector_generic.bench_vec_distance(.zalgebra, false), .category = .vec },
+    .{ .name = "Vector Distance (zm)", .func = vector_generic.bench_vec_distance(.zm, false), .category = .vec },
+    .{ .name = "Vector Distance (zmath)", .func = vector_generic.bench_vec_distance(.zmath, false), .category = .vec },
     .{ .name = "zalgebra varying data", .func = vector.bench_zalgebra_varying_data, .category = .vec },
     .{ .name = "zm varying data", .func = vector.bench_zm_varying_data, .category = .vec },
     .{ .name = "zmath varying data", .func = zmath.bench_zmath_varying_data, .category = .vec },
@@ -50,6 +55,9 @@ const BENCHMARKS = [_]BenchmarkInfo{
     .{ .name = "zalgebra mat mul", .func = matrix.bench_zalgebra_mat_mul, .category = .matrix },
     .{ .name = "zm mat mul", .func = matrix.bench_zm_mat_mul, .category = .matrix },
     .{ .name = "zmath mat mul", .func = zmath.bench_zmath_mat_mul, .category = .matrix },
+    .{ .name = "Matrix Multiplication (zalgebra)", .func = matrix_generic.bench_mat_mul(.zalgebra, false), .category = .matrix },
+    .{ .name = "Matrix Multiplication (zm)", .func = matrix_generic.bench_mat_mul(.zm, false), .category = .matrix },
+    .{ .name = "Matrix Multiplication (zmath)", .func = matrix_generic.bench_mat_mul(.zmath, false), .category = .matrix },
     .{ .name = "zalgebra mat transpose", .func = matrix.bench_zalgebra_mat_transpose, .category = .matrix },
     .{ .name = "zm mat transpose", .func = matrix.bench_zm_mat_transpose, .category = .matrix },
     .{ .name = "zmath mat transpose", .func = zmath.bench_zmath_mat_transpose, .category = .matrix },
