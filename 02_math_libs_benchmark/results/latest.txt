@@ -1,0 +1,157 @@
+
+=== All Benchmarks ===
+
+benchmark              runs     total time     time/run (avg ± σ)    (min ... max)                p75        p99        p995      
+-----------------------------------------------------------------------------------------------------------------------------
+Vector Mul: zalgebra   [36m500000   13.588ms       [32m27ns ± 56ns           [34m(20ns ... 13.305us)          [36m30ns       31ns       31ns      [0m
+Vector Mul: zalgebra [MEMORY]                  [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vector Mul: zm         [36m500000   13.582ms       [32m27ns ± 55ns           [34m(20ns ... 12.974us)          [36m30ns       31ns       31ns      [0m
+Vector Mul: zm [MEMORY]                        [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vector Mul: zmath      [36m500000   13.554ms       [32m27ns ± 47ns           [34m(20ns ... 14.317us)          [36m30ns       31ns       31ns      [0m
+Vector Mul: zmath [MEMORY]                     [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vector Dot: zalgebra   [36m500000   13.496ms       [32m26ns ± 35ns           [34m(20ns ... 11.993us)          [36m30ns       31ns       31ns      [0m
+Vector Dot: zalgebra [MEMORY]                  [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vector Dot: zm         [36m500000   13.554ms       [32m27ns ± 48ns           [34m(20ns ... 13.115us)          [36m30ns       31ns       31ns      [0m
+Vector Dot: zm [MEMORY]                        [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vector Dot: zmath      [36m500000   13.538ms       [32m27ns ± 45ns           [34m(20ns ... 12.474us)          [36m30ns       31ns       31ns      [0m
+Vector Dot: zmath [MEMORY]                     [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vector Cross: zalgebra [36m500000   13.574ms       [32m27ns ± 50ns           [34m(20ns ... 13.676us)          [36m30ns       31ns       31ns      [0m
+Vector Cross: zalgebra [MEMORY]                [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vector Cross: zm       [36m500000   13.55ms        [32m27ns ± 45ns           [34m(20ns ... 13.365us)          [36m30ns       31ns       31ns      [0m
+Vector Cross: zm [MEMORY]                      [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vector Cross: zmath    [36m500000   13.547ms       [32m27ns ± 44ns           [34m(20ns ... 13.005us)          [36m30ns       31ns       31ns      [0m
+Vector Cross: zmath [MEMORY]                   [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vec Length: zalgebra   [36m500000   13.58ms        [32m27ns ± 49ns           [34m(20ns ... 11.852us)          [36m30ns       31ns       31ns      [0m
+Vec Length: zalgebra [MEMORY]                  [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vec Length: zm         [36m500000   13.604ms       [32m27ns ± 54ns           [34m(20ns ... 12.303us)          [36m30ns       31ns       31ns      [0m
+Vec Length: zm [MEMORY]                        [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vec Length: zmath      [36m500000   13.526ms       [32m27ns ± 49ns           [34m(20ns ... 16.23us)           [36m30ns       31ns       31ns      [0m
+Vec Length: zmath [MEMORY]                     [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vec Norm: zalgebra     [36m500000   13.727ms       [32m27ns ± 48ns           [34m(20ns ... 13.235us)          [36m30ns       31ns       31ns      [0m
+Vec Norm: zalgebra [MEMORY]                    [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vec Norm: zm           [36m500000   13.752ms       [32m27ns ± 54ns           [34m(20ns ... 16.942us)          [36m30ns       31ns       31ns      [0m
+Vec Norm: zm [MEMORY]                          [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vec Norm: zmath        [36m500000   13.566ms       [32m27ns ± 48ns           [34m(20ns ... 13.115us)          [36m30ns       31ns       31ns      [0m
+Vec Norm: zmath [MEMORY]                       [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vec Lerp: zalgebra     [36m500000   13.533ms       [32m27ns ± 44ns           [34m(20ns ... 12.233us)          [36m30ns       31ns       31ns      [0m
+Vec Lerp: zalgebra [MEMORY]                    [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vec Lerp: zm           [36m500000   13.554ms       [32m27ns ± 48ns           [34m(20ns ... 12.674us)          [36m30ns       31ns       31ns      [0m
+Vec Lerp: zm [MEMORY]                          [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vec Lerp: zmath        [36m500000   13.604ms       [32m27ns ± 59ns           [34m(20ns ... 24.516us)          [36m30ns       31ns       31ns      [0m
+Vec Lerp: zmath [MEMORY]                       [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vec Dist: zalgebra     [36m500000   13.526ms       [32m27ns ± 39ns           [34m(20ns ... 11.692us)          [36m30ns       31ns       31ns      [0m
+Vec Dist: zalgebra [MEMORY]                    [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vec Dist: zm           [36m500000   13.598ms       [32m27ns ± 57ns           [34m(20ns ... 20.018us)          [36m30ns       31ns       31ns      [0m
+Vec Dist: zm [MEMORY]                          [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vec Dist: zmath        [36m500000   13.518ms       [32m27ns ± 40ns           [34m(20ns ... 12.484us)          [36m30ns       31ns       31ns      [0m
+Vec Dist: zmath [MEMORY]                       [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Vec3 Dot Batch AoS: za [36m326688   6.078s         [32m18.605us ± 40.985us   [34m(16.591us ... 3.783ms)       [36m17.624us   26.881us   30.297us  [0m
+Vec3 Dot Batch AoS: za [MEMORY]                [32m4.000KiB ± 0B         [34m(4.000KiB ... 4.000KiB)      [36m4.000KiB   4.000KiB   4.000KiB  [0m
+Vec3 Dot Batch AoS: zm [36m325850   6.123s         [32m18.793us ± 41.025us   [34m(16.601us ... 4.103ms)       [36m17.794us   27.341us   30.578us  [0m
+Vec3 Dot Batch AoS: zm [MEMORY]                [32m4.000KiB ± 0B         [34m(4.000KiB ... 4.000KiB)      [36m4.000KiB   4.000KiB   4.000KiB  [0m
+Vec3 Dot Batch AoS: zm [36m320565   6.011s         [32m18.751us ± 40.187us   [34m(16.651us ... 3.837ms)       [36m17.764us   27.251us   30.727us  [0m
+Vec3 Dot Batch AoS: zm [MEMORY]                [32m4.000KiB ± 0B         [34m(4.000KiB ... 4.000KiB)      [36m4.000KiB   4.000KiB   4.000KiB  [0m
+Vec3 Dot Batch SoA: za [36m322476   6.057s         [32m18.785us ± 41.84us    [34m(16.701us ... 4.013ms)       [36m17.803us   27.111us   30.087us  [0m
+Vec3 Dot Batch SoA: za [MEMORY]                [32m3.000KiB ± 0B         [34m(3.000KiB ... 3.000KiB)      [36m3.000KiB   3.000KiB   3.000KiB  [0m
+Vec3 Dot Batch SoA: zm [36m322053   6.072s         [32m18.854us ± 42.45us    [34m(16.701us ... 3.905ms)       [36m17.843us   27.411us   30.468us  [0m
+Vec3 Dot Batch SoA: zm [MEMORY]                [32m3.000KiB ± 0B         [34m(3.000KiB ... 3.000KiB)      [36m3.000KiB   3.000KiB   3.000KiB  [0m
+Vec3 Dot Batch SoA: zm [36m321315   6.015s         [32m18.72us ± 41.796us    [34m(16.01us ... 3.438ms)        [36m17.753us   27.18us    30.788us  [0m
+Vec3 Dot Batch SoA: zm [MEMORY]                [32m3.000KiB ± 0B         [34m(3.000KiB ... 3.000KiB)      [36m3.000KiB   3.000KiB   3.000KiB  [0m
+Vec3 Cross Batch AoS:  [36m293345   6.267s         [32m21.364us ± 51.468us   [34m(18.064us ... 4.331ms)       [36m20.198us   30.809us   33.944us  [0m
+Vec3 Cross Batch AoS:  [MEMORY]                [32m6.000KiB ± 0B         [34m(6.000KiB ... 6.000KiB)      [36m6.000KiB   6.000KiB   6.000KiB  [0m
+Vec3 Cross Batch AoS:  [36m292388   6.215s         [32m21.256us ± 53.349us   [34m(18.003us ... 4.107ms)       [36m20.118us   31.229us   36.068us  [0m
+Vec3 Cross Batch AoS:  [MEMORY]                [32m6.000KiB ± 0B         [34m(6.000KiB ... 6.000KiB)      [36m6.000KiB   6.000KiB   6.000KiB  [0m
+Vec3 Cross Batch AoS:  [36m292380   6.189s         [32m21.17us ± 51.988us    [34m(18.043us ... 4.763ms)       [36m20.018us   30.557us   34.585us  [0m
+Vec3 Cross Batch AoS:  [MEMORY]                [32m6.000KiB ± 0B         [34m(6.000KiB ... 6.000KiB)      [36m6.000KiB   6.000KiB   6.000KiB  [0m
+Vec3 Norm Batch AoS: z [36m319882   6.015s         [32m18.803us ± 37.692us   [34m(16.772us ... 3.103ms)       [36m17.853us   27.401us   31.369us  [0m
+Vec3 Norm Batch AoS: z [MEMORY]                [32m4.000KiB ± 0B         [34m(4.000KiB ... 4.000KiB)      [36m4.000KiB   4.000KiB   4.000KiB  [0m
+Vec3 Norm Batch AoS: z [36m320779   6.021s         [32m18.77us ± 40.5us      [34m(16.771us ... 3.559ms)       [36m17.794us   27.081us   31.529us  [0m
+Vec3 Norm Batch AoS: z [MEMORY]                [32m4.000KiB ± 0B         [34m(4.000KiB ... 4.000KiB)      [36m4.000KiB   4.000KiB   4.000KiB  [0m
+Vec3 Norm Batch AoS: z [36m321152   6.012s         [32m18.72us ± 38.952us    [34m(16.791us ... 4.097ms)       [36m17.773us   27.061us   31.419us  [0m
+Vec3 Norm Batch AoS: z [MEMORY]                [32m4.000KiB ± 0B         [34m(4.000KiB ... 4.000KiB)      [36m4.000KiB   4.000KiB   4.000KiB  [0m
+Vec3 Sum Reduction: za [36m324843   6.025s         [32m18.548us ± 41.49us    [34m(16.491us ... 4.085ms)       [36m17.573us   26.82us    30.166us  [0m
+Vec3 Sum Reduction: za [MEMORY]                [32m2.000KiB ± 0B         [34m(2.000KiB ... 2.000KiB)      [36m2.000KiB   2.000KiB   2.000KiB  [0m
+Vec3 Sum Reduction: zm [36m325620   6.037s         [32m18.54us ± 42.565us    [34m(16.5us ... 4.068ms)         [36m17.563us   26.81us    30.717us  [0m
+Vec3 Sum Reduction: zm [MEMORY]                [32m2.000KiB ± 0B         [34m(2.000KiB ... 2.000KiB)      [36m2.000KiB   2.000KiB   2.000KiB  [0m
+Vec3 Sum Reduction: zm [36m328416   6.165s         [32m18.772us ± 41.111us   [34m(16.471us ... 3.8ms)         [36m17.803us   27.341us   30.417us  [0m
+Vec3 Sum Reduction: zm [MEMORY]                [32m2.000KiB ± 0B         [34m(2.000KiB ... 2.000KiB)      [36m2.000KiB   2.000KiB   2.000KiB  [0m
+Mat Mul: zalgebra      [36m500000   22.329ms       [32m44ns ± 65ns           [34m(40ns ... 13.465us)          [36m50ns       51ns       51ns      [0m
+Mat Mul: zalgebra [MEMORY]                     [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Mat Mul: zm            [36m500000   14.79ms        [32m29ns ± 44ns           [34m(20ns ... 10.709us)          [36m30ns       31ns       31ns      [0m
+Mat Mul: zm [MEMORY]                           [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Mat Mul: zmath         [36m500000   13.714ms       [32m27ns ± 47ns           [34m(20ns ... 12.924us)          [36m30ns       31ns       31ns      [0m
+Mat Mul: zmath [MEMORY]                        [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Mat Trans: zalgebra    [36m500000   13.691ms       [32m27ns ± 41ns           [34m(20ns ... 13.596us)          [36m30ns       31ns       31ns      [0m
+Mat Trans: zalgebra [MEMORY]                   [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Mat Trans: zm          [36m500000   13.757ms       [32m27ns ± 53ns           [34m(20ns ... 12.964us)          [36m30ns       31ns       31ns      [0m
+Mat Trans: zm [MEMORY]                         [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Mat Trans: zmath       [36m500000   13.762ms       [32m27ns ± 52ns           [34m(20ns ... 14.197us)          [36m30ns       31ns       31ns      [0m
+Mat Trans: zmath [MEMORY]                      [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Mat Chain: zalgebra    [36m500000   28.475ms       [32m56ns ± 71ns           [34m(49ns ... 25.518us)          [36m60ns       61ns       61ns      [0m
+Mat Chain: zalgebra [MEMORY]                   [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Mat Chain: zm          [36m500000   17.987ms       [32m35ns ± 53ns           [34m(29ns ... 13.165us)          [36m40ns       41ns       41ns      [0m
+Mat Chain: zm [MEMORY]                         [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Mat Chain: zmath       [36m500000   13.723ms       [32m27ns ± 50ns           [34m(20ns ... 13.205us)          [36m30ns       31ns       31ns      [0m
+Mat Chain: zmath [MEMORY]                      [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Mat4×Vec4 Batch AoS:  [36m164528   5.566s         [32m33.83us ± 56.107us    [34m(30.277us ... 3.849ms)       [36m32.12us    45.285us   52.629us  [0m
+Mat4×Vec4 Batch AoS:  [MEMORY]                [32m6.000KiB ± 0B         [34m(6.000KiB ... 6.000KiB)      [36m6.000KiB   6.000KiB   6.000KiB  [0m
+Mat4×Vec4 Batch AoS:  [36m169504   5.758s         [32m33.972us ± 52.651us   [34m(30.367us ... 3.557ms)       [36m32.351us   45.235us   51.357us  [0m
+Mat4×Vec4 Batch AoS:  [MEMORY]                [32m6.000KiB ± 0B         [34m(6.000KiB ... 6.000KiB)      [36m6.000KiB   6.000KiB   6.000KiB  [0m
+Mat4×Vec4 Batch AoS:  [36m164937   5.554s         [32m33.674us ± 55.469us   [34m(30.227us ... 3.593ms)       [36m31.819us   44.944us   53.861us  [0m
+Mat4×Vec4 Batch AoS:  [MEMORY]                [32m6.000KiB ± 0B         [34m(6.000KiB ... 6.000KiB)      [36m6.000KiB   6.000KiB   6.000KiB  [0m
+Mat4×Mat4 Batch: zalg [36m263968   5.829s         [32m22.082us ± 35.995us   [34m(20.078us ... 3.069ms)       [36m21.12us    31.399us   34.645us  [0m
+Mat4×Mat4 Batch: zalg [MEMORY]                [32m12.000KiB ± 0B        [34m(12.000KiB ... 12.000KiB)    [36m12.000KiB  12.000KiB  12.000KiB [0m
+Mat4×Mat4 Batch: zm   [36m267892   5.872s         [32m21.921us ± 33.456us   [34m(19.887us ... 3.742ms)       [36m20.96us    31.158us   36.739us  [0m
+Mat4×Mat4 Batch: zm [MEMORY]                  [32m12.000KiB ± 0B        [34m(12.000KiB ... 12.000KiB)    [36m12.000KiB  12.000KiB  12.000KiB [0m
+Mat4×Mat4 Batch: zmat [36m266723   5.848s         [32m21.925us ± 33.046us   [34m(19.917us ... 3.089ms)       [36m20.98us    31.299us   38.222us  [0m
+Mat4×Mat4 Batch: zmat [MEMORY]                [32m12.000KiB ± 0B        [34m(12.000KiB ... 12.000KiB)    [36m12.000KiB  12.000KiB  12.000KiB [0m
+Quat Mul: zalgebra     [36m500000   17.001ms       [32m34ns ± 48ns           [34m(29ns ... 12.543us)          [36m40ns       41ns       41ns      [0m
+Quat Mul: zalgebra [MEMORY]                    [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Quat Mul: zm           [36m500000   16.349ms       [32m32ns ± 47ns           [34m(29ns ... 12.834us)          [36m31ns       41ns       41ns      [0m
+Quat Mul: zm [MEMORY]                          [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Quat Mul: zmath        [36m500000   13.587ms       [32m27ns ± 56ns           [34m(20ns ... 17.322us)          [36m30ns       31ns       31ns      [0m
+Quat Mul: zmath [MEMORY]                       [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Quat Norm: zalgebra    [36m500000   19.66ms        [32m39ns ± 60ns           [34m(29ns ... 20.338us)          [36m40ns       41ns       41ns      [0m
+Quat Norm: zalgebra [MEMORY]                   [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Quat Norm: zm          [36m500000   18.943ms       [32m37ns ± 59ns           [34m(29ns ... 15.189us)          [36m40ns       41ns       41ns      [0m
+Quat Norm: zm [MEMORY]                         [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Quat Norm: zmath       [36m500000   13.566ms       [32m27ns ± 42ns           [34m(20ns ... 13.766us)          [36m30ns       31ns       31ns      [0m
+Quat Norm: zmath [MEMORY]                      [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Quat Slerp: zalgebra   [36m500000   16.658ms       [32m33ns ± 53ns           [34m(29ns ... 17.833us)          [36m40ns       41ns       41ns      [0m
+Quat Slerp: zalgebra [MEMORY]                  [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Quat Slerp: zm         [36m500000   34.193ms       [32m68ns ± 74ns           [34m(60ns ... 22.141us)          [36m70ns       71ns       71ns      [0m
+Quat Slerp: zm [MEMORY]                        [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Quat Mul Batch: zalgeb [36m264951   5.776s         [32m21.803us ± 28.826us   [34m(19.928us ... 2.548ms)       [36m20.829us   30.678us   34.144us  [0m
+Quat Mul Batch: zalgeb [MEMORY]                [32m6.000KiB ± 0B         [34m(6.000KiB ... 6.000KiB)      [36m6.000KiB   6.000KiB   6.000KiB  [0m
+Quat Mul Batch: zm     [36m266941   5.86s          [32m21.955us ± 25.494us   [34m(19.917us ... 2.614ms)       [36m21.029us   32.281us   38.061us  [0m
+Quat Mul Batch: zm [MEMORY]                    [32m6.000KiB ± 0B         [34m(6.000KiB ... 6.000KiB)      [36m6.000KiB   6.000KiB   6.000KiB  [0m
+Quat Mul Batch: zmath  [36m270351   5.837s         [32m21.592us ± 27.856us   [34m(19.737us ... 2.719ms)       [36m20.658us   30.387us   33.673us  [0m
+Quat Mul Batch: zmath [MEMORY]                 [32m6.000KiB ± 0B         [34m(6.000KiB ... 6.000KiB)      [36m6.000KiB   6.000KiB   6.000KiB  [0m
+Quat Norm Batch: zalge [36m302849   5.963s         [32m19.69us ± 30.829us    [34m(17.743us ... 3.352ms)       [36m18.765us   28.614us   33.854us  [0m
+Quat Norm Batch: zalge [MEMORY]                [32m4.000KiB ± 0B         [34m(4.000KiB ... 4.000KiB)      [36m4.000KiB   4.000KiB   4.000KiB  [0m
+Quat Norm Batch: zm    [36m302345   5.926s         [32m19.602us ± 32.003us   [34m(17.723us ... 3.097ms)       [36m18.705us   28.093us   31.349us  [0m
+Quat Norm Batch: zm [MEMORY]                   [32m2.000KiB ± 0B         [34m(2.000KiB ... 2.000KiB)      [36m2.000KiB   2.000KiB   2.000KiB  [0m
+Quat Norm Batch: zmath [36m306530   5.96s          [32m19.444us ± 33.062us   [34m(17.553us ... 3.092ms)       [36m18.475us   27.923us   31.99us   [0m
+Quat Norm Batch: zmath [MEMORY]                [32m4.000KiB ± 0B         [34m(4.000KiB ... 4.000KiB)      [36m4.000KiB   4.000KiB   4.000KiB  [0m
+Look At: zalgebra      [36m500000   13.761ms       [32m27ns ± 55ns           [34m(20ns ... 13.565us)          [36m30ns       31ns       31ns      [0m
+Look At: zalgebra [MEMORY]                     [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Look At: zm            [36m500000   32.776ms       [32m65ns ± 65ns           [34m(60ns ... 12.033us)          [36m70ns       71ns       71ns      [0m
+Look At: zm [MEMORY]                           [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+Look At: zmath         [36m500000   13.697ms       [32m27ns ± 46ns           [34m(20ns ... 13.706us)          [36m30ns       31ns       31ns      [0m
+Look At: zmath [MEMORY]                        [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+SIMD Vec Ops: zmath    [36m500000   13.548ms       [32m27ns ± 44ns           [34m(20ns ... 10.84us)           [36m30ns       31ns       31ns      [0m
+SIMD Vec Ops: zmath [MEMORY]                   [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+SIMD Mat Chain: zmath  [36m500000   13.715ms       [32m27ns ± 45ns           [34m(20ns ... 10.45us)           [36m30ns       31ns       31ns      [0m
+SIMD Mat Chain: zmath [MEMORY]                 [32m0B ± 0B               [34m(0B ... 0B)                  [36m0B         0B         0B        [0m
+AoS→SoA Vec3: zalgeb [36m163376   5.017s         [32m30.712us ± 41.718us   [34m(27.732us ... 3.335ms)       [36m29.395us   42.77us    48.902us  [0m
+AoS→SoA Vec3: zalgeb [MEMORY]                [32m7.000KiB ± 0B         [34m(7.000KiB ... 7.000KiB)      [36m7.000KiB   7.000KiB   7.000KiB  [0m
+AoS→SoA Vec3: zm     [36m162726   5.569s         [32m34.224us ± 55.076us   [34m(30.487us ... 4.104ms)       [36m32.642us   45.456us   51.046us  [0m
+AoS→SoA Vec3: zm [MEMORY]                    [32m7.000KiB ± 0B         [34m(7.000KiB ... 7.000KiB)      [36m7.000KiB   7.000KiB   7.000KiB  [0m
+AoS→SoA Vec3: zmath  [36m164271   5.545s         [32m33.759us ± 51.376us   [34m(30.487us ... 3.83ms)        [36m31.759us   45.065us   49.312us  [0m
+AoS→SoA Vec3: zmath [MEMORY]                 [32m7.000KiB ± 0B         [34m(7.000KiB ... 7.000KiB)      [36m7.000KiB   7.000KiB   7.000KiB  [0m
+SoA→AoS Vec3: zalgeb [36m169001   5.063s         [32m29.961us ± 45.195us   [34m(27.182us ... 3.552ms)       [36m28.364us   41.798us   48.121us  [0m
+SoA→AoS Vec3: zalgeb [MEMORY]                [32m7.000KiB ± 0B         [34m(7.000KiB ... 7.000KiB)      [36m7.000KiB   7.000KiB   7.000KiB  [0m
+SoA→AoS Vec3: zm     [36m163541   4.988s         [32m30.501us ± 45.725us   [34m(27.702us ... 3.115ms)       [36m28.934us   41.218us   44.424us  [0m
+SoA→AoS Vec3: zm [MEMORY]                    [32m7.000KiB ± 0B         [34m(7.000KiB ... 7.000KiB)      [36m7.000KiB   7.000KiB   7.000KiB  [0m
+SoA→AoS Vec3: zmath  [36m163101   5.501s         [32m33.729us ± 53.343us   [34m(30.386us ... 3.924ms)       [36m32.04us    44.554us   49.162us  [0m
+SoA→AoS Vec3: zmath [MEMORY]                 [32m7.000KiB ± 0B         [34m(7.000KiB ... 7.000KiB)      [36m7.000KiB   7.000KiB   7.000KiB  [0m
