@@ -132,3 +132,19 @@ The benchmark methodology includes:
 - Single sample validation to ensure correctness
 - Optimized build flags (ReleaseFast, optional -Dcpu=native)
 - Memory allocation tracking via zbench framework
+
+## Benchmark Naming Convention
+
+Due to zbench's 22-character display limit, benchmark names use abbreviated identifiers:
+
+**Library Abbreviations:**
+- `za` = zalgebra
+- `zm` = zm
+- `zmath` = zmath
+
+**Examples:**
+- `V3DotBatchAoS:za` = Vec3 Dot Batch AoS: zalgebra
+- `M4V4BatchAoS:zmath` = Mat4×Vec4 Batch AoS: zmath
+- `QuatMulBatch:zm` = Quat Mul Batch: zm
+
+This ensures all benchmark results are clearly identifiable without truncation ambiguity.
