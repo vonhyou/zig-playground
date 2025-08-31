@@ -43,7 +43,7 @@ zig build run -Doptimize=ReleaseFast -Dcpu=native
 
 ## Current benchmark cases
 
-### Vector Operations (18 benchmarks)
+### Vector Operations (33 benchmarks)
 - **Vec3 multiplication** (component-wise) - zalgebra, zm, zmath
 - **Vec3 dot product** - zalgebra, zm, zmath  
 - **Vec3 cross product** - zalgebra, zm, zmath
@@ -51,29 +51,43 @@ zig build run -Doptimize=ReleaseFast -Dcpu=native
 - **Vec3 normalization** - zalgebra, zm, zmath
 - **Vec3 linear interpolation (lerp)** - zalgebra, zm, zmath
 - **Vec3 distance** - zalgebra, zm, zmath
+- **Vec3 dot product batched (AoS layout)** - zalgebra, zm, zmath
+- **Vec3 dot product batched (SoA layout)** - zalgebra, zm, zmath
+- **Vec3 cross product batched (AoS layout)** - zalgebra, zm, zmath
+- **Vec3 normalization batched (AoS layout)** - zalgebra, zm, zmath
+- **Vec3 sum reduction** (horizontal reduction on arrays) - zalgebra, zm, zmath
 
-### Matrix Operations (9 benchmarks)
+### Matrix Operations (15 benchmarks)
 - **Mat4×Mat4 multiplication** - zalgebra, zm, zmath
 - **Mat4 transpose** - zalgebra, zm, zmath
 - **Mat4 chain multiplication** (multiple matrix multiplications) - zalgebra, zm, zmath
+- **Mat4×Vec4 batched transforms (AoS layout)** - zalgebra, zm, zmath
+- **Mat4×Mat4 batched multiplication** - zalgebra, zm, zmath
 
-### Quaternion Operations (8 benchmarks)
+### Quaternion Operations (14 benchmarks)
 - **Quaternion multiplication** - zalgebra, zm, zmath
 - **Quaternion normalization** - zalgebra, zm, zmath
 - **Quaternion slerp** (spherical linear interpolation) - zalgebra, zm
+- **Quaternion multiplication batched** - zalgebra, zm, zmath
+- **Quaternion normalization batched** - zalgebra, zm, zmath
 
-### GameDev Operations (5 benchmarks)
+### GameDev Operations (11 benchmarks)
 - **Look At matrix generation** - zalgebra (placeholder), zm, zmath
 - **SIMD vector operations** (combined dot/cross/scale) - zmath only
 - **SIMD matrix chain operations** (rotation/translation/scale chains) - zmath only
+- **AoS→SoA Vec3 conversion** (memory layout transformation) - zalgebra, zm, zmath
+- **SoA→AoS Vec3 conversion** (memory layout transformation) - zalgebra, zm, zmath
 
 ## Proposed SIMD benches to add next
 
-- Batched vector ops (SoA/AoS): vec3/vec4 dot, vec3 cross, normalize/length, horizontal reductions on large arrays
-- Matrix ops: mat4×vec4 batched transforms, mat4×mat4, 4×4 transpose via shuffles, affine inverse vs full inverse
-- Quaternions: multiply, normalize, slerp, quat→mat conversion (batched)
+- ✅ ~~Batched vector ops (SoA/AoS): vec3/vec4 dot, vec3 cross, normalize/length, horizontal reductions on large arrays~~ **COMPLETED**
+- ✅ ~~Matrix ops: mat4×vec4 batched transforms, mat4×mat4~~ **COMPLETED**
+- ✅ ~~Quaternions: multiply, normalize (batched)~~ **COMPLETED**  
+- ✅ ~~Memory/layout: AoS↔SoA interleave/deinterleave throughput~~ **COMPLETED**
+- 4×4 transpose via SIMD shuffles, affine inverse vs full inverse
+- Quaternion slerp, quat→mat conversion (batched)
 - Geometry: transform AABBs, frustum culling (plane-dot-vec), ray-box/triangle intersections (vectorized)
-- Memory/layout: aligned vs unaligned loads/stores (if observable), AoS↔SoA interleave/deinterleave throughput
+- Memory/layout: aligned vs unaligned loads/stores (if observable)
 - Variants: compare ReleaseFast with -Dcpu=native and baseline targets; try lane-width variants if the library/target enables it
 
 ## Methodology

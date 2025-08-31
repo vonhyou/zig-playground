@@ -80,3 +80,136 @@ pub fn bench_quat_slerp_zm(allocator: std.mem.Allocator) void {
 // Note: A slerp benchmark for zmath is intentionally omitted.
 // zmath does not provide a native slerp function, and using lerp
 // would result in an inaccurate and misleading performance comparison.
+
+// --- Batched Quaternion Operations (SIMD-focused) ---
+
+const BATCH_SIZE = 128;
+
+// Batched Quaternion Multiplication
+pub fn bench_quat_mul_batched_zalgebra(allocator: std.mem.Allocator) void {
+    const quats_a = allocator.alloc(zalgebra.Quat, BATCH_SIZE) catch return;
+    const quats_b = allocator.alloc(zalgebra.Quat, BATCH_SIZE) catch return;
+    const results = allocator.alloc(zalgebra.Quat, BATCH_SIZE) catch return;
+    defer allocator.free(quats_a);
+    defer allocator.free(quats_b);
+    defer allocator.free(results);
+    
+    // Initialize data
+    for (0..BATCH_SIZE) |i| {
+        const fi = @as(f32, @floatFromInt(i));
+        const axis1 = zalgebra.Vec3.new(1, 0, 0);
+        const axis2 = zalgebra.Vec3.new(0, 1, 0);
+        quats_a[i] = zalgebra.Quat.fromAxis(0.1 + fi * 0.001, axis1);
+        quats_b[i] = zalgebra.Quat.fromAxis(0.2 + fi * 0.001, axis2);
+    }
+    
+    for (0..BATCH_SIZE) |i| {
+        results[i] = zalgebra.Quat.mul(quats_a[i], quats_b[i]);
+    }
+    std.mem.doNotOptimizeAway(&results[0]);
+}
+
+pub fn bench_quat_mul_batched_zm(allocator: std.mem.Allocator) void {
+    const quats_a = allocator.alloc(zm.Quaternionf, BATCH_SIZE) catch return;
+    const quats_b = allocator.alloc(zm.Quaternionf, BATCH_SIZE) catch return;
+    const results = allocator.alloc(zm.Quaternionf, BATCH_SIZE) catch return;
+    defer allocator.free(quats_a);
+    defer allocator.free(quats_b);
+    defer allocator.free(results);
+    
+    // Initialize data
+    for (0..BATCH_SIZE) |i| {
+        const fi = @as(f32, @floatFromInt(i));
+        const axis1 = [_]f32{ 1, 0, 0 };
+        const axis2 = [_]f32{ 0, 1, 0 };
+        quats_a[i] = zm.Quaternionf.fromAxisAngle(axis1, 0.1 + fi * 0.001);
+        quats_b[i] = zm.Quaternionf.fromAxisAngle(axis2, 0.2 + fi * 0.001);
+    }
+    
+    for (0..BATCH_SIZE) |i| {
+        results[i] = zm.Quaternionf.multiply(quats_a[i], quats_b[i]);
+    }
+    std.mem.doNotOptimizeAway(&results[0]);
+}
+
+pub fn bench_quat_mul_batched_zmath(allocator: std.mem.Allocator) void {
+    const quats_a = allocator.alloc(zmath_gd.Quat, BATCH_SIZE) catch return;
+    const quats_b = allocator.alloc(zmath_gd.Quat, BATCH_SIZE) catch return;
+    const results = allocator.alloc(zmath_gd.Quat, BATCH_SIZE) catch return;
+    defer allocator.free(quats_a);
+    defer allocator.free(quats_b);
+    defer allocator.free(results);
+    
+    // Initialize data
+    for (0..BATCH_SIZE) |i| {
+        const fi = @as(f32, @floatFromInt(i));
+        quats_a[i] = zmath_gd.quatFromAxisAngle(zmath_gd.f32x4(1, 0, 0, 0), 0.1 + fi * 0.001);
+        quats_b[i] = zmath_gd.quatFromAxisAngle(zmath_gd.f32x4(0, 1, 0, 0), 0.2 + fi * 0.001);
+    }
+    
+    for (0..BATCH_SIZE) |i| {
+        results[i] = zmath_gd.qmul(quats_a[i], quats_b[i]);
+    }
+    std.mem.doNotOptimizeAway(&results[0]);
+}
+
+// Batched Quaternion Normalization
+pub fn bench_quat_normalize_batched_zalgebra(allocator: std.mem.Allocator) void {
+    const quats = allocator.alloc(zalgebra.Quat, BATCH_SIZE) catch return;
+    const results = allocator.alloc(zalgebra.Quat, BATCH_SIZE) catch return;
+    defer allocator.free(quats);
+    defer allocator.free(results);
+    
+    // Initialize data
+    for (0..BATCH_SIZE) |i| {
+        const fi = @as(f32, @floatFromInt(i));
+        const axis = zalgebra.Vec3.new(1, 1, 1);
+        quats[i] = zalgebra.Quat.fromAxis(0.1 + fi * 0.001, axis);
+        // Make it slightly non-normalized
+        quats[i].w *= 1.1;
+    }
+    
+    for (0..BATCH_SIZE) |i| {
+        results[i] = zalgebra.Quat.norm(quats[i]);
+    }
+    std.mem.doNotOptimizeAway(&results[0]);
+}
+
+pub fn bench_quat_normalize_batched_zm(allocator: std.mem.Allocator) void {
+    const quats = allocator.alloc(zm.Quaternionf, BATCH_SIZE) catch return;
+    defer allocator.free(quats);
+    
+    // Initialize data
+    for (0..BATCH_SIZE) |i| {
+        const fi = @as(f32, @floatFromInt(i));
+        const axis = [_]f32{ 1, 1, 1 };
+        quats[i] = zm.Quaternionf.fromAxisAngle(axis, 0.1 + fi * 0.001);
+        // Make it slightly non-normalized
+        quats[i].w *= 1.1;
+    }
+    
+    for (0..BATCH_SIZE) |i| {
+        zm.Quaternionf.normalize(&quats[i]);
+    }
+    std.mem.doNotOptimizeAway(&quats[0]);
+}
+
+pub fn bench_quat_normalize_batched_zmath(allocator: std.mem.Allocator) void {
+    const quats = allocator.alloc(zmath_gd.Quat, BATCH_SIZE) catch return;
+    const results = allocator.alloc(zmath_gd.Quat, BATCH_SIZE) catch return;
+    defer allocator.free(quats);
+    defer allocator.free(results);
+    
+    // Initialize data
+    for (0..BATCH_SIZE) |i| {
+        const fi = @as(f32, @floatFromInt(i));
+        quats[i] = zmath_gd.quatFromAxisAngle(zmath_gd.f32x4(1, 1, 1, 0), 0.1 + fi * 0.001);
+        // Make it slightly non-normalized
+        quats[i] = quats[i] * zmath_gd.f32x4s(1.1);
+    }
+    
+    for (0..BATCH_SIZE) |i| {
+        results[i] = zmath_gd.normalize4(quats[i]);
+    }
+    std.mem.doNotOptimizeAway(&results[0]);
+}
