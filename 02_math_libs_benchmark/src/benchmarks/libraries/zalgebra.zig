@@ -13,6 +13,7 @@ pub const VecOps = struct {
     pub fn dot(a: Vec3, b: Vec3) f32 { return zalgebra.Vec3.dot(a, b); }
     pub fn cross(a: Vec3, b: Vec3) Vec3 { return zalgebra.Vec3.cross(a, b); }
     pub fn length(v: Vec3) f32 { return zalgebra.Vec3.length(v); }
+    pub fn lerp(a: Vec3, b: Vec3, t: f32) Vec3 { return zalgebra.Vec3.lerp(a, b, t); }
     pub fn distance(a: Vec3, b: Vec3) f32 {
         const diff = zalgebra.Vec3.sub(b, a);
         return zalgebra.Vec3.length(diff);
@@ -30,6 +31,22 @@ pub const MatOps = struct {
     }
     pub fn multiply(a: zalgebra.Mat4, b: zalgebra.Mat4) zalgebra.Mat4 {
         return zalgebra.Mat4.mul(a, b);
+    }
+};
+
+pub const QuatOps = struct {
+    pub const Quat = zalgebra.Quat;
+    
+    pub fn fromAxisAngle(axis: VecOps.Vec3, angle: f32) Quat {
+        return zalgebra.Quat.fromAxis(angle, axis);
+    }
+    
+    pub fn multiply(a: Quat, b: Quat) Quat {
+        return zalgebra.Quat.mul(a, b);
+    }
+    
+    pub fn normalize(q: Quat) Quat {
+        return zalgebra.Quat.norm(q);
     }
 };
 

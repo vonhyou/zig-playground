@@ -12,6 +12,7 @@ pub const VecOps = struct {
     pub fn dot(a: Vec3, b: Vec3) f32 { return zm.vec.dot(a, b); }
     pub fn cross(a: Vec3, b: Vec3) Vec3 { return zm.vec.cross(a, b); }
     pub fn length(v: Vec3) f32 { return zm.vec.length(v); }
+    pub fn lerp(a: Vec3, b: Vec3, t: f32) Vec3 { return zm.vec.lerp(a, b, t); }
     pub fn distance(a: Vec3, b: Vec3) f32 { return zm.vec.distance(a, b); }
 
     pub fn extract3(v: Vec3) struct { x: f32, y: f32, z: f32 } {
@@ -23,6 +24,24 @@ pub const MatOps = struct {
     pub fn identity() zm.Mat4f { return zm.Mat4f.identity(); }
     pub fn translate(x: f32, y: f32, z: f32) zm.Mat4f { return zm.Mat4f.translation(x, y, z); }
     pub fn multiply(a: zm.Mat4f, b: zm.Mat4f) zm.Mat4f { return zm.Mat4f.multiply(a, b); }
+};
+
+pub const QuatOps = struct {
+    pub const Quat = zm.Quaternionf;
+    
+    pub fn fromAxisAngle(axis: VecOps.Vec3, angle: f32) Quat {
+        return zm.Quaternionf.fromAxisAngle(axis, angle);
+    }
+    
+    pub fn multiply(a: Quat, b: Quat) Quat {
+        return zm.Quaternionf.multiply(a, b);
+    }
+    
+    pub fn normalize(q: Quat) Quat {
+        var result = q;
+        zm.Quaternionf.normalize(&result);
+        return result;
+    }
 };
 
 pub const GeoOps = struct {

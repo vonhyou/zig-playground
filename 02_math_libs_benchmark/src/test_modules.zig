@@ -6,7 +6,7 @@ const config = @import("config.zig");
 const vector = @import("benchmarks/vector.zig");  
 const matrix = @import("benchmarks/matrix.zig");
 const quaternion = @import("benchmarks/quaternion.zig");
-const zmath = @import("benchmarks/zmath.zig");
+const zmath_simd = @import("benchmarks/zmath_simd.zig");
 
 test "config validation" {
     // Just check that config compiles and has expected values
@@ -24,12 +24,12 @@ test "module imports work" {
     const vec_func: *const fn (std.mem.Allocator) void = vector.bench_zalgebra_vec_mul;
     const mat_func: *const fn (std.mem.Allocator) void = matrix.bench_zalgebra_mat_mul;  
     const quat_func: *const fn (std.mem.Allocator) void = quaternion.bench_zalgebra_quat_mul;
-    const zmath_func: *const fn (std.mem.Allocator) void = zmath.bench_zmath_vec_mul;
+    const zmath_simd_func: *const fn (std.mem.Allocator) void = zmath_simd.bench_zmath_simd_vec_ops;
     
     _ = vec_func;
     _ = mat_func;
     _ = quat_func;
-    _ = zmath_func;
+    _ = zmath_simd_func;
     _ = allocator;
 }
 

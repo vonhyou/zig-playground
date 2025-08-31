@@ -12,6 +12,7 @@ pub const VecOps = struct {
     pub fn dot(a: Vec3, b: Vec3) f32 { return zmath_gd.dot3(a, b)[0]; } // broadcast -> scalar
     pub fn cross(a: Vec3, b: Vec3) VecOps.Vec3 { return zmath_gd.cross3(a, b); }
     pub fn length(v: Vec3) f32 { return zmath_gd.length3(v)[0]; }
+    pub fn lerp(a: Vec3, b: Vec3, t: f32) Vec3 { return zmath_gd.lerp(a, b, t); }
     pub fn distance(a: Vec3, b: Vec3) f32 { return zmath_gd.length3(b - a)[0]; }
 
     pub fn extract3(v: Vec3) struct { x: f32, y: f32, z: f32 } {
@@ -30,6 +31,22 @@ pub const MatOps = struct {
     }
     pub fn translate(x: f32, y: f32, z: f32) zmath_gd.Mat { return zmath_gd.translation(x, y, z); }
     pub fn multiply(a: zmath_gd.Mat, b: zmath_gd.Mat) zmath_gd.Mat { return zmath_gd.mul(a, b); }
+};
+
+pub const QuatOps = struct {
+    pub const Quat = zmath_gd.Quat;
+    
+    pub fn fromAxisAngle(axis: VecOps.Vec3, angle: f32) Quat {
+        return zmath_gd.quatFromAxisAngle(axis, angle);
+    }
+    
+    pub fn multiply(a: Quat, b: Quat) Quat {
+        return zmath_gd.qmul(a, b);
+    }
+    
+    pub fn normalize(q: Quat) Quat {
+        return zmath_gd.qnormalize(q);
+    }
 };
 
 pub const GeoOps = struct {
